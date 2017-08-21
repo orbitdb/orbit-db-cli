@@ -1,0 +1,4 @@
+node_modules/
+.orbitdb/
+*.csv
+test/test-ipfs-data/
