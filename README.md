@@ -1,5 +1,7 @@
 # orbitdb - CLI for orbit-db
 
+[![CircleCI](https://circleci.com/gh/haadcode/orbit-db-cli.svg?style=svg)](https://circleci.com/gh/haadcode/orbit-db-cli)
+
 **Work in progress!**
 
 ## Install
