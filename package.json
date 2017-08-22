@@ -29,6 +29,6 @@
     "mocha": "^3.5.0"
   },
   "scripts": {
-    "test": "mocha"
+    "test": "IPFS_PATH=/tmp/orbit-db-cli-tests mocha"
   }
 }

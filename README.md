@@ -4,6 +4,11 @@
 
 **Work in progress!**
 
+## Requirements
+
+* [Node.js](https://nodejs.org) >= [**v8.0.0**](https://nodejs.org/en/download/current/)
+* npm
+
 ## Install
 ```
 git clone https://github.com/haadcode/orbit-db-cli.git
@@ -30,19 +35,26 @@ Output:
         Serverless peer-to-peer Database
     Website: https://github.com/orbitdb/orbit-db
 
-Usage: src/cli/bin <command>
+Usage: src/bin.js <command> <database>
 
 Commands:
-  counter <command> <dbname>   Counter Database
-  demo <name>                  Runs a sequence of commands as an example
-  docstore <command> <dbname>  Document Database
-  eventlog <command> <dbname>  Eventlog Database
-  feed <command> <dbname>      Feed Database
-  keyvalue <command> <dbname>  Key-Value Database
+  create <database> <type>      Create a new database             [aliases: new]
+  del <database> <key>          Delete an entry from a database. Only valid for:
+                                docstore, keyvalue and feed.
+  demo <name>                   Runs a sequence of commands as an example
+  drop <database> yes           Remove a database locally. This does not remove
+                                data on other nodes that have the removed
+                                database replicated.
+  get <database> [<search>]     Query the database              [aliases: query]
+  inc <database> [<value>]      Increase the value of a counter database
+                                                             [aliases: increase]
+  info <database>               Show information about a database
+                                                               [aliases: status]
+  put <database> <document>     Add a document to a document database
+  set <database> <key> <value>  Set a value of a key in KeyValue database
 
 Options:
   -h, --help  Show help                                                [boolean]
-
 ```
 
 ## Demo
@@ -64,24 +76,21 @@ Output:
         Serverless peer-to-peer Database
     Website: https://github.com/orbitdb/orbit-db
 
-> node ./src/bin docstore put /orbitdb/demo "{\"_id\":1,\"name\":\"FRANK!\"}" --indexBy name
-Loading database '/orbitdb/demo'
+> node "src/bin.js" put /orbitdb/demo "{\"_id\":1,\"name\":\"FRANK\"}" --indexBy name
+Index as 'FRANK' (name) to '/orbitdb/demo'
+Added QmXPeAA8ciCLN8h3Gghij8PAE3zwV1kWrFpXzs7qAARywA (35 ms)
 
-Index as 'FRANK!' (name) to '/orbitdb/demo'
-Added QmdQS1bbHHitN4XsAojAXX7SxxRkTBW7QRQKbSMnuHrrU5 (34 ms)
-
-> node ./src/bin docstore search /orbitdb/demo "FRANK!" --progress
+> node "src/bin.js" get /orbitdb/demo "FRANK" --progress
 Loading database '/orbitdb/demo' ████████████████████████████████████████████████ 1/1 | 100.0% | 00:00:00
-
-Search for 'FRANK!' from '/orbitdb/demo'
+Searching for 'FRANK' from '/orbitdb/demo'
 ┌────────────────────────────────────────────────────────────────┬───┐
 │name                                                            │_id│
 ├────────────────────────────────────────────────────────────────┼───┤
-│FRANK!                                                          │1  │
+│FRANK                                                           │1  │
 └────────────────────────────────────────────────────────────────┴───┘
 Found 1 matches (0 ms)
 
-> node ./src/bin docstore drop /orbitdb/demo yes
+> node "src/bin.js" drop /orbitdb/demo yes
 Dropped database '/orbitdb/demo'
 
 Demo finished!

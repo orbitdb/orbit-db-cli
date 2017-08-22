@@ -3,10 +3,7 @@
 const readline = require('readline')
 const pWhilst = require('p-whilst')
 const table = require('../../views/table')
-const schemaView = require('../../views/csv-schema1-view.js')
-const openDatabase = require('../../lib/open-database')
-const outputTimer = require('../../lib/output-timer')
-const exitOnError = require('../../exit-on-error')
+const schemaView = require('../../views/csv-schema1-view')
 
 const rl = readline.createInterface({
   input: process.stdin,
@@ -15,7 +12,7 @@ const rl = readline.createInterface({
 
 const doQuery = (db, text, limit, outputJson) => {
   if (!outputJson)
-    process.stdout.write(`Search for '${text}' from '${db.dbname}'`)
+    process.stdout.write(`Searching for '${text}' from '${db.dbname}'`)
 
   const startTime = new Date().getTime()
 
@@ -49,7 +46,7 @@ const search = (db, text, options) => {
   const waitForInput = (prompt) => new Promise((resolve) => rl.question(prompt, resolve))
 
   const queryLoop = () => {
-    return waitForInput('Search: ')
+    return waitForInput('\nSearch: ')
       .then((text) => {
         done = isExitCommand(text)
         if (!done)
@@ -62,46 +59,11 @@ const search = (db, text, options) => {
     process.stdout.write('\nType /quit to exit the search prompt\n')
     return pWhilst(() => done === false, queryLoop)
   } else {
-    if (options.json !== true)
-      process.stdout.write('\n')
+    // if (options.json !== true)
+    //   process.stdout.write('\n')
 
-    return doQuery(db, text, options.limit, options.json)
+    return doQuery(db, text || '', options.limit, options.json)
   }
 }
 
-/* Export as Yargs command */
-exports.command = 'search <dbname> [<text>]'
-exports.desc = 'Search from documents'
-
-exports.builder = function (yargs) {
-  return yargs
-    .example('\n$0 search /posts "hello"', '\nSearch for exact match "Haad Code" (case insensitive) from "posts"')
-    .example('\n$0 search /posts -i', '\nOpen search input')
-    .option('interactive', {
-      alias: 'i',
-      describe: 'Input from stdin to orbit-db',
-      default: false,
-    })
-    .option('output', {
-      alias: 'o',
-      describe: 'Output format',
-      default: 'print',
-      choices: ['print','json'],
-    })
-    
-}
-
-exports.handler = (argv) => {
-  const startTime = new Date().getTime()
-  openDatabase(argv, { loadProgress: true })
-    .then((db) => {
-      return search(db, argv.text, { 
-        interactive: argv.interactive, 
-        limit: argv.limit || -1, 
-        json: argv.output === 'json',
-      })
-    })
-    .catch(exitOnError)
-    .then(() => outputTimer(startTime, argv))
-    .then(() => process.exit(0))
-}
+module.exports = search

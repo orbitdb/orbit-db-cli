@@ -6,19 +6,15 @@ const dataPath = path.join(process.cwd(), '.orbitdb')
 const dbPath = path.join(dataPath, '/db/')
 const ipfsPath = path.join(dataPath, '/ipfs/')
 
-const conf = { 
-  IpfsDataDir: ipfsPath,
-  Addresses: {
-    // API: '/ip4/127.0.0.1/tcp/0',
-    // Swarm: ['/ip4/0.0.0.0/tcp/0'],
-    // Gateway: '/ip4/0.0.0.0/tcp/0',
-    API: null,
-    Swarm: [],
-    Gateway: null,
-  },
+const conf = {
+  start: false,
+  repo: process.env.IPFS_PATH || path.join('./.orbitdb', '/ipfs'),
+  EXPERIMENTAL: {
+    pubsub: true,        
+  }
 }
 
 module.exports = {
-  daemonConfig: conf,
+  ipfsConfig: conf,
   databasePath: dbPath,
 }
