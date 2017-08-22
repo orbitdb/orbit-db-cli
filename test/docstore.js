@@ -4,24 +4,23 @@
 const assert = require('assert')
 const CLI = require('./cli')
 
-describe('OrbitDB CLI - Counter Database', function () {
+describe.skip('OrbitDB CLI - Document Database', function () {
   this.timeout(5000)
 
   const dbname = '/testdb'
 
-  const checkValueCommand = `get ${dbname}`
+  const checkValueCommand = `docstore get ${dbname}`
   const getCounterValue = () => parseInt(CLI(checkValueCommand).toString())
   const contains = (str, match) => str.indexOf(match) > -1
 
   before(() => {
     // Make sure we don't have an existing database
-    CLI(`drop ${dbname} yes`)
-    CLI(`create ${dbname} counter`)
+    CLI(`counter drop ${dbname} yes`)
   })
 
   after(() => {
     // Drop the test database
-    CLI(`drop ${dbname} yes`)
+    CLI(`counter drop ${dbname} yes`)
   })
 
   it('returns the counter value', () => {
@@ -29,12 +28,12 @@ describe('OrbitDB CLI - Counter Database', function () {
   })
 
   it('increases a counter by 1', () => {
-    CLI(`inc ${dbname}`)
+    CLI(`counter increase ${dbname} 1`)
     assert.equal(getCounterValue(), 1)
   })
 
   it('increases a counter by 33', () => {
-    CLI(`increase ${dbname} 33`)
+    CLI(`counter increase ${dbname} 33`)
     assert.equal(getCounterValue(), 34)
   })
 
@@ -43,14 +42,13 @@ describe('OrbitDB CLI - Counter Database', function () {
   })
 
   it('can\'t decrease the counter', () => {
-    let err
-    try {
-      CLI(`increase ${dbname} -33`)
-    } catch (e) {
-      err = e.toString()
-    }
-    assert.equal(contains(err, 'Invalid input value -33. Input must be greater than 0.'), true)
+    CLI(`counter increase ${dbname} -33`)
     assert.equal(getCounterValue(), 34)
   })
 
+  it('drops the database', () => {
+    const result1 = CLI(`counter drop ${dbname} yes`)
+    assert.equal(contains(result1, `Dropped database '${dbname}'`), true)
+    assert.equal(getCounterValue(), 0)
+  })
 })
