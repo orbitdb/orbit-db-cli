@@ -38,6 +38,7 @@ Output:
 Usage: src/bin.js <command> <database>
 
 Commands:
+  add <database> <event>        Add an event to an eventlog or feed database
   create <database> <type>      Create a new database             [aliases: new]
   del <database> <key>          Delete an entry from a database. Only valid for:
                                 docstore, keyvalue and feed.

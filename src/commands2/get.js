@@ -44,9 +44,14 @@ exports.handler = (argv) => {
     .then((db) => {
       if (db.type === 'counter') {
         process.stdout.write(`${db.value}\n`)
-      } else if (db.type === 'eventlog') {
-        const result = db.iterator().collect()
-        process.stdout.write(result + '\n')
+      } else if (db.type === 'eventlog' || db.type === 'feed') {
+        const result = db.iterator({ limit: argv.limit || -1 }).collect().map(e => e)
+        if (result.length > 0) {
+          process.stdout.write(result.map(e => JSON.stringify(e, null, 2)).join('\n'))
+          process.stdout.write('\n')
+        } else {
+          process.stdout.write(`Database '${db.dbname}' is empty!\n`)
+        }
       } else if (db.type === 'keyvalue') {
         if (!argv.search)
           throw new Error('No key provided')

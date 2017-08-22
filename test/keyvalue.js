@@ -9,8 +9,6 @@ describe('OrbitDB CLI - KeyValue Database', function () {
 
   const dbname = '/testdb'
 
-  const checkValueCommand = `docstore get ${dbname}`
-  const getCounterValue = () => parseInt(CLI(checkValueCommand).toString())
   const contains = (str, match) => str.indexOf(match) > -1
 
   before(() => {
