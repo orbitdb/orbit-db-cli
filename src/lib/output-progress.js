@@ -4,8 +4,8 @@ const progress = require('progress-string')
 const padString = require('./pad-string')
 
 const outputProgress = (action, dbname, count = 0, total = 1, startTime) => {
-  const bar = progress({ 
-    width: 48, 
+  const bar = progress({
+    width: 48,
     total: total || 1,
     complete: '█',
     incomplete: '░',

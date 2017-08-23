@@ -21,7 +21,7 @@ describe('OrbitDB CLI - Document Database', function () {
   })
 
   it('adds a document', () => {
-    const jsonDoc = JSON.stringify({ hello: "world", _id: 1 }).split('"').join('\\"')
+    const jsonDoc = JSON.stringify({ hello: 'world', _id: 1 }).split('"').join('\\"')
     const result = CLI(`put ${dbname} "${jsonDoc}"`)
     assert.equal(result.toString(), `Added document '1'\n`)
   })
@@ -29,7 +29,7 @@ describe('OrbitDB CLI - Document Database', function () {
   it('throws an error when the provided document doesn\'t contain field \'_id\'', () => {
     let err
     try {
-      CLI(`put ${dbname} "${JSON.stringify({ hello: "world" }).split('"').join('\\"')}"`)
+      CLI(`put ${dbname} "${JSON.stringify({ hello: 'world' }).split('"').join('\\"')}"`)
     } catch (e) {
       err = e.toString().split('\n')[1]
     }
@@ -57,7 +57,7 @@ describe('OrbitDB CLI - Document Database', function () {
 
   it('deletes a document', () => {
     CLI(`drop ${dbname} yes`)
-    const jsonDoc = JSON.stringify({ hello: "world" }).split('"').join('\\"')
+    const jsonDoc = JSON.stringify({ hello: 'world' }).split('"').join('\\"')
     let hash = CLI(`put ${dbname} "${jsonDoc}" --indexBy hello`)
     hash = hash.toString().replace('\n', '')
     const result = CLI(`del ${dbname} world`)

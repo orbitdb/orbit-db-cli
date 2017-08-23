@@ -7,8 +7,6 @@ const CLI = require('./cli')
 describe('OrbitDB CLI - Demo', function () {
   this.timeout(50000)
 
-  const dbname = '/testdb'
-
   let result
 
   before(() => {

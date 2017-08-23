@@ -1,20 +1,18 @@
 'use strict'
 
-const openDatabase = require('../lib/open-database')
 const outputTimer = require('../lib/output-timer')
-const exitOnError = require('../exit-on-error')
 const logo = require('../logo')
-// const utils = require('../../test/test-utils')
 const cli = require('../../test/cli')
 
 /* Export as Yargs command */
 exports.command = 'demo <name>'
+exports.aliases = ['tour']
 exports.desc = 'Runs a sequence of commands as an example'
 
 exports.builder = function (yargs) {
   return yargs
     .usage(`${logo}\nUsage: $0 ${exports.command}`)
-    .example("\n$0 demo Frank", "\nRuns the demo with name 'Frank'")
+    .example('n$0 demo Frank', '\nRuns the demo with name \'Frank\'')
 }
 
 exports.handler = (argv) => {

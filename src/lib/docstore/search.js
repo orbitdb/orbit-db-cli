@@ -56,7 +56,7 @@ const search = (db, text, options) => {
   }
 
   if (options.interactive) {
-    process.stdout.write('\nType /quit to exit the search prompt\n')
+    process.stdout.write('Type /quit to exit the search prompt\n')
     return pWhilst(() => done === false, queryLoop)
   } else {
     // if (options.json !== true)

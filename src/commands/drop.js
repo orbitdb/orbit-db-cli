@@ -1,17 +1,13 @@
 'use strict'
 
-const path = require('path')
-const Logger = require('logplease')
-const logger = Logger.create("orbitdb-counter-inc", { color: Logger.Colors.Yellow })
-
 const openDatabase = require('../lib/open-database')
 const outputTimer = require('../lib/output-timer')
 const exitOnError = require('../exit-on-error')
-const validateDatabaseType = require('../validate-database-type')
 
 /* Export as Yargs command */
 exports.command = 'drop <database> yes'
-exports.desc = 'Remove a database locally. This does not remove data on other nodes that have the removed database replicated.'
+exports.aliases = ['destroy']
+exports.desc = 'Remove a database locally. This doesn\'t remove data on other nodes that have the removed database replicated.'
 
 exports.builder = function (yargs) {
   return yargs

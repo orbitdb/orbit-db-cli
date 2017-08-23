@@ -11,7 +11,7 @@ const hookProgressOutput = (db, argv, loadingText, startTime) => {
     if (argv.progress === true && argv.output !== 'json') {
       if (normalizeTotal(total) > longLoadingLimit && ((count % 100) === 0 || count === normalizeTotal(total))) {
         outputProgress(loadingText, db.dbname, count, normalizeTotal(total), startTime)
-      } else if(normalizeTotal(total) <= longLoadingLimit) {
+      } else if (normalizeTotal(total) <= longLoadingLimit) {
         outputProgress(loadingText, db.dbname, count, normalizeTotal(total), startTime)
       }
     }

@@ -1,11 +1,11 @@
 'use strict'
 
 const path = require('path')
-const openDatabase = require('../../lib/open-database')
-const outputTimer = require('../../lib/output-timer')
-const exitOnError = require('../../exit-on-error')
-const hookProgressOutput = require('../../hook-output-progress')
-const csvToObjects = require('../../csv-to-objects')
+const createDatabase = require('../lib/create-database')
+const outputTimer = require('../lib/output-timer')
+const exitOnError = require('../exit-on-error')
+const hookProgressOutput = require('../hook-output-progress')
+const csvToObjects = require('../csv-to-objects')
 
 const trimField = (e, name) => {
   if (typeof e === 'string')
@@ -31,10 +31,11 @@ const importCsv = (db, filename, options) => {
   }
 
   const onProgress = (entry) => {
-    linesImported ++
+    linesImported++
     db.events.emit('progress.load', db.dbname, null, null, linesImported, lines.length)
   }
 
+  // process.stdout.write(`\nCSV read, writing to database...\n`, lines.length)
   return db.batchPut(lines, onProgress)
     .then(() => {
       const deltaTime = new Date().getTime() - startTime
@@ -45,13 +46,12 @@ const importCsv = (db, filename, options) => {
 }
 
 /* Export as Yargs command */
-exports.command = 'import <inputFile> <dbname> <schema>'
-exports.desc = 'Import a csv file to a database'
+exports.command = 'import <file> <database> <schema>'
+exports.aliases = ['csv']
+exports.desc = 'Import a CSV file to a document database'
 
 exports.builder = function (yargs) {
   return yargs
-    // .example('\n$0 put /posts "{\\"id\\":\\"1\\",\\"author\\":\\"haad\\",\\"content\\":\\"Hello friend\\"}" content', 
-    //          '\nAdd a document to the database, index by the field \'content\'')
     .option('indexBy', {
       alias: 'idx',
       describe: 'Field to index by',
@@ -62,15 +62,15 @@ exports.builder = function (yargs) {
 exports.handler = (argv) => {
   const startTime = new Date().getTime()
 
-  const options = { 
-    schema: require(path.resolve(argv.schema)), 
+  const options = {
+    schema: require(path.resolve(argv.schema)),
     limit: argv.limit || -1,
     trimFields: ['name'],
   }
 
-  openDatabase(argv, { loadProgress: false })
-    .then((db) => hookProgressOutput(db, argv, `Import '${argv.inputFile}' to`, startTime))
-    .then((db) => importCsv(db, argv.inputFile, options))
+  return createDatabase(argv.database, 'docstore', argv)
+    .then((db) => hookProgressOutput(db, argv, `Import '${argv.file}' to`, startTime))
+    .then((db) => importCsv(db, argv.file, options))
     .catch(exitOnError)
     .then(() => outputTimer(startTime, argv))
     .then(() => process.exit(0))

@@ -1,6 +1,5 @@
 'use strict'
 
-const outputProgress = require('./lib/output-progress')
 const csvToObjects = require('./csv-to-objects')
 
 const trimField = (e, name) => {
@@ -24,7 +23,7 @@ const importCsv = (db, filename, options) => {
   }
 
   const onProgress = (entry) => {
-    linesImported ++
+    linesImported++
     db.events.emit('progress.load', db.dbname, null, null, linesImported, lines.length)
   }
 

@@ -1,26 +1,32 @@
 'use strict'
 
-const Logger = require('logplease')
-const logger = Logger.create("orbitdb-counter-inc", { color: Logger.Colors.Yellow })
-
 const openDatabase = require('../lib/open-database')
 const outputTimer = require('../lib/output-timer')
 const exitOnError = require('../exit-on-error')
-const validateDatabaseType = require('../validate-database-type')
 const search = require('../lib/docstore/search')
 
 /* Export as Yargs command */
 exports.command = 'get <database> [<search>]'
-exports.aliases = 'query'
-exports.desc = 'Query the database'
+exports.aliases = ['query', 'search']
+exports.desc = 'Query the database.\n'
 
 exports.builder = function (yargs) {
   return yargs
-    .usage(`Usage: $0 get <database> [<search>]`)
-    .example('\n$0 get /posts', 
+    .usage('This command is used to query a database in orbit-db.\n' +
+           '\nUsage: $0 get|search|query <database> [<search>]')
+    .example('\n$0 get /posts',
              '\nQuery all results from /posts when /posts is an eventlog')
-    .example('\n$0 get /posts QmFoo1', 
-             '\nSearch the index field for \'QmFoo1\' from /posts when /posts is a document store')
+    .example('\n$0 get /posts --limit 1',
+             '\nQuery the latest event from /posts when /posts is an eventlog')
+    .example('\n$0 search /users QmFoo1',
+             '\nSearch the index field for \'QmFoo1\' from /users when /users is a document store')
+    .example('\n$0 query /users -i',
+             '\nOpen the search prompt to search from /users (search prompt only for docstore databases)')
+    .option('interactive', {
+      alias: 'i',
+      describe: 'Display interactive search prompt\n(only for docstore databases)',
+      default: false,
+    })
     .option('progress', {
       alias: 'p',
       describe: 'Display pretty progress bars',
@@ -61,11 +67,11 @@ exports.handler = (argv) => {
         else
           process.stdout.write(`No value set to key '${argv.search}'\n`)
       } else if (db.type === 'docstore') {
-        return search(db, argv.search, { 
-          interactive: argv.interactive, 
-          limit: argv.limit || -1, 
+        return search(db, argv.search, {
+          interactive: argv.interactive && db.type === 'docstore',
+          limit: argv.limit || -1,
           json: argv.output === 'json',
-        })        
+        })
       }
     })
     .catch(exitOnError)

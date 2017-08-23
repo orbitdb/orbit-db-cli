@@ -1,6 +1,5 @@
 'use strict'
 
-const path = require('path')
 const IPFS = require('ipfs')
 
 const startIpfs = (config = {}) => {

@@ -1,7 +1,5 @@
 'use strict'
 
-const Logger = require('logplease')
-const logger = Logger.create("orbitdb-docstore-put", { color: Logger.Colors.Yellow })
 const openDatabase = require('../lib/open-database')
 const outputTimer = require('../lib/output-timer')
 const exitOnError = require('../exit-on-error')
@@ -22,7 +20,7 @@ exports.desc = 'Add a document to a document database'
 
 exports.builder = function (yargs) {
   return yargs
-    .example('\n$0 put /posts "{\\"id\\":\\"1\\",\\"author\\":\\"haad\\",\\"content\\":\\"Hello friend\\"}" --indexBy content', 
+    .example('\n$0 put /posts "{\\"id\\":\\"1\\",\\"author\\":\\"haad\\",\\"content\\":\\"Hello friend\\"}" --indexBy content',
              '\nAdd a document to the database, index by the field \'content\'')
 }
 

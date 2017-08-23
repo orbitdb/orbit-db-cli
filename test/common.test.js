@@ -49,11 +49,11 @@ describe('OrbitDB CLI - Common', function () {
   it('needs a confirmation to drop a database', () => {
     let err
     try {
-      const result1 = CLI(`drop ${dbname} no`)
+      CLI(`drop ${dbname} no`)
     } catch (e) {
       err = e.toString()
     }
-      assert.equal(err.includes(`Can't drop the database. Confirm with: 'yes'`), true)
+    assert.equal(err.includes(`Can't drop the database. Confirm with: 'yes'`), true)
   })
 
   it('drops a database', () => {
