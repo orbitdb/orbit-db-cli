@@ -7,13 +7,12 @@ const outputTimer = require('../lib/output-timer')
 const exitOnError = require('../exit-on-error')
 const validateDatabaseType = require('../validate-database-type')
 
-const put = (db, document, options) => {
-  process.stdout.write(`Index as '${document[options.indexBy || '_id']}' (${options.indexBy}) to '${db.dbname}'`)
+const put = (db, doc, options) => {
   const startTime = new Date().getTime()
-  return db.put(document)
+  return db.put(doc)
     .then((hash) => {
       const duration = new Date().getTime() - startTime
-      process.stdout.write(`\n\Added ${hash} (${duration} ms)\n`)
+      process.stdout.write(`Added document '${doc[options.indexBy || '_id']}'\n`)
     })
 }
 

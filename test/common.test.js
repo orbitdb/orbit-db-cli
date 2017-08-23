@@ -10,8 +10,6 @@ describe('OrbitDB CLI - Common', function () {
 
   const dbname = '/testdb'
 
-  const contains = (str, match) => str.indexOf(match) > -1
-
   before(() => {
     // Make sure we don't have an existing database
     CLI(`drop ${dbname} yes`)
@@ -29,7 +27,7 @@ describe('OrbitDB CLI - Common', function () {
     } catch (e) {
       err = e.toString()
     }
-    assert.equal(contains(err, 'Database \'/testdb\' doesn\'t exist.'), true)
+    assert.equal(err.includes('Database \'/testdb\' doesn\'t exist.'), true)
   })
 
   it('creates a database', () => {
@@ -38,14 +36,14 @@ describe('OrbitDB CLI - Common', function () {
     const result2 = CLI(`info ${dbname}`)
     const id = result2.toString().split('\n').find(e => e.indexOf('Owner:') > -1).split(': ')[1]
     const expected = path.join('/orbitdb', id, dbname)
-    assert.equal(contains(result1.toString(), expected), true)
+    assert.equal(result1.toString().includes(expected), true)
   })
 
   it('shows database info', () => {
     const result = CLI(`info ${dbname}`)
-    assert.equal(contains(result.toString(), 'Owner:'), true)
-    assert.equal(contains(result.toString(), `Name: ${dbname}`), true)
-    assert.equal(contains(result.toString(), `Type: counter`), true)
+    assert.equal(result.toString().includes('Owner:'), true)
+    assert.equal(result.toString().includes(`Name: ${dbname}`), true)
+    assert.equal(result.toString().includes(`Type: counter`), true)
   })
 
   it('needs a confirmation to drop a database', () => {
@@ -55,12 +53,12 @@ describe('OrbitDB CLI - Common', function () {
     } catch (e) {
       err = e.toString()
     }
-      assert.equal(contains(err, `Can't drop the database. Confirm with: 'yes'`), true)
+      assert.equal(err.includes(`Can't drop the database. Confirm with: 'yes'`), true)
   })
 
   it('drops a database', () => {
     const result1 = CLI(`drop ${dbname} yes`)
-    assert.equal(contains(result1.toString(), `Dropped database '${dbname}'`), true)
+    assert.equal(result1.toString().includes(`Dropped database '${dbname}'`), true)
 
     let err
     try {
@@ -68,7 +66,7 @@ describe('OrbitDB CLI - Common', function () {
     } catch (e) {
       err = e.toString()
     }
-    assert.equal(contains(err, `Database '${dbname}' doesn't exist.`), true)
+    assert.equal(err.includes(`Database '${dbname}' doesn't exist.`), true)
   })
 
 })

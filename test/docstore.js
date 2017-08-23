@@ -4,51 +4,76 @@
 const assert = require('assert')
 const CLI = require('./cli')
 
-describe.skip('OrbitDB CLI - Document Database', function () {
+describe('OrbitDB CLI - Document Database', function () {
   this.timeout(5000)
 
   const dbname = '/testdb'
 
-  const checkValueCommand = `docstore get ${dbname}`
-  const getCounterValue = () => parseInt(CLI(checkValueCommand).toString())
-  const contains = (str, match) => str.indexOf(match) > -1
-
   before(() => {
     // Make sure we don't have an existing database
-    CLI(`counter drop ${dbname} yes`)
+    CLI(`drop ${dbname} yes`)
+    CLI(`create ${dbname} docstore`)
   })
 
   after(() => {
     // Drop the test database
-    CLI(`counter drop ${dbname} yes`)
+    CLI(`drop ${dbname} yes`)
   })
 
-  it('returns the counter value', () => {
-    assert.equal(getCounterValue(), 0)
+  it('adds a document', () => {
+    const jsonDoc = JSON.stringify({ hello: "world", _id: 1 }).split('"').join('\\"')
+    const result = CLI(`put ${dbname} "${jsonDoc}"`)
+    assert.equal(result.toString(), `Added document '1'\n`)
   })
 
-  it('increases a counter by 1', () => {
-    CLI(`counter increase ${dbname} 1`)
-    assert.equal(getCounterValue(), 1)
+  it('throws an error when the provided document doesn\'t contain field \'_id\'', () => {
+    let err
+    try {
+      CLI(`put ${dbname} "${JSON.stringify({ hello: "world" }).split('"').join('\\"')}"`)
+    } catch (e) {
+      err = e.toString().split('\n')[1]
+    }
+    assert.equal(err, 'Error: The provided document doesn\'t contain field \'_id\'')
   })
 
-  it('increases a counter by 33', () => {
-    CLI(`counter increase ${dbname} 33`)
-    assert.equal(getCounterValue(), 34)
+  it('returns a document', () => {
+    const result = CLI(`get ${dbname}`)
+    assert.equal(result.toString().includes('Found 1 matches'), true)
+    assert.equal(result.toString().includes('hello'), true)
+    assert.equal(result.toString().includes('world'), true)
   })
 
-  it('is persisted', () => {
-    assert.equal(getCounterValue(), 34)
+  it('output is rendered nicely in a table', () => {
+    const result = CLI(`get ${dbname}`)
+    assert.equal(result.toString().includes('─'), true)
+    assert.equal(result.toString().includes('│'), true)
+    assert.equal(result.toString().includes('┌'), true)
+    assert.equal(result.toString().includes('└'), true)
+    assert.equal(result.toString().includes('┐'), true)
+    assert.equal(result.toString().includes('┘'), true)
+    assert.equal(result.toString().includes('├'), true)
+    assert.equal(result.toString().includes('┤'), true)
   })
 
-  it('can\'t decrease the counter', () => {
-    CLI(`counter increase ${dbname} -33`)
-    assert.equal(getCounterValue(), 34)
+  it('deletes a document', () => {
+    CLI(`drop ${dbname} yes`)
+    const jsonDoc = JSON.stringify({ hello: "world" }).split('"').join('\\"')
+    let hash = CLI(`put ${dbname} "${jsonDoc}" --indexBy hello`)
+    hash = hash.toString().replace('\n', '')
+    const result = CLI(`del ${dbname} world`)
+    assert.equal(result.toString().includes('Deleted'), true)
+    const noResults = CLI(`get ${dbname}`)
+    assert.equal(noResults.toString().includes(`Database '/testdb' is empty!`), true)
   })
 
-  it('drops the database', () => {
-    const result1 = CLI(`counter drop ${dbname} yes`)
-    assert.equal(contains(result1, `Dropped database '${dbname}'`), true)
-    assert.equal(getCounterValue(), 0)
+  it('returns an error when trying to delete non-existent document', () => {
+    let err
+    try {
+      CLI(`del ${dbname} "nokey"`)
+    } catch (e) {
+      err = e.toString().split('\n')[1]
+    }
+    assert.equal(err, `Error: No entry with key 'nokey' in the database`)
   })
+
 })

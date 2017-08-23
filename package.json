@@ -26,7 +26,8 @@
     "yargs": "^8.0.2"
   },
   "devDependencies": {
-    "mocha": "^3.5.0"
+    "mocha": "^3.5.0",
+    "multihashes": "^0.4.5"
   },
   "scripts": {
     "test": "IPFS_PATH=/tmp/orbit-db-cli-tests mocha"

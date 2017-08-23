@@ -9,8 +9,6 @@ describe('OrbitDB CLI - KeyValue Database', function () {
 
   const dbname = '/testdb'
 
-  const contains = (str, match) => str.indexOf(match) > -1
-
   before(() => {
     // Make sure we don't have an existing database
     CLI(`drop ${dbname} yes`)
@@ -23,12 +21,22 @@ describe('OrbitDB CLI - KeyValue Database', function () {
 
   it('sets a value', () => {
     const result = CLI(`set ${dbname} id hello`)
-    assert.equal(contains(result.toString(), '\'id\' set to \'hello\''), true)
+    assert.equal(result.toString().includes('\'id\' set to \'hello\''), true)
   })
 
   it('returns a value for a key', () => {
     const result = CLI(`get ${dbname} id`)
     assert.equal(result.toString(), 'hello\n')
+  })
+
+  it('updates a value', () => {
+    const result = CLI(`set ${dbname} id hello2`)
+    assert.equal(result.toString().includes('\'id\' set to \'hello2\''), true)
+  })
+
+  it('doesn\'t return a value for unknown a key', () => {
+    const result = CLI(`get ${dbname} nokey`)
+    assert.equal(result.toString(), 'No value set to key \'nokey\'\n')
   })
 
 })
