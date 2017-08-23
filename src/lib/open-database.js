@@ -14,8 +14,9 @@ const openDatabase = async (database, argv, openAsType) => {
   const ipfs = await startIpfs(config.ipfsConfig)
   const peerId = await ipfs.config.get('Identity.PeerID')
   const orbitdb = new OrbitDB(ipfs, peerId)
+  const directory = config.defaultDatabaseDir
   logger.debug(`Loading database '${database}'`)
-  return orbitdb.load(database, './.orbitdb', peerId, {
+  return orbitdb.load(database, directory, peerId, {
     maxHistory: -1,
     indexBy: argv.indexBy,
     replicate: false,
