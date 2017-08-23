@@ -5,11 +5,6 @@ const pWhilst = require('p-whilst')
 const table = require('../../views/table')
 const schemaView = require('../../views/csv-schema1-view')
 
-const rl = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout,
-})
-
 const doQuery = (db, text, limit, outputJson) => {
   if (!outputJson)
     process.stdout.write(`Searching for '${text}' from '${db.dbname}'`)
@@ -41,6 +36,11 @@ const doQuery = (db, text, limit, outputJson) => {
 }
 
 const search = (db, text, options) => {
+  const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout,
+  })
+
   let done = false
   const isExitCommand = (text) => text === '/quit' || text === '/q'
   const waitForInput = (prompt) => new Promise((resolve) => rl.question(prompt, resolve))

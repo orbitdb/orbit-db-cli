@@ -2,6 +2,7 @@
 'use strict'
 
 const assert = require('assert')
+const rmrf = require('rimraf')
 const CLI = require('./cli')
 
 describe('OrbitDB CLI - Demo', function () {
@@ -10,7 +11,10 @@ describe('OrbitDB CLI - Demo', function () {
   let result
 
   before(() => {
+    // Make sure we don't have an existing database
+    rmrf.sync('./orbitdb')
     const command = `demo Tester`
+    CLI('id')
     result = CLI(command)
     result = result.toString()
   })
@@ -20,7 +24,7 @@ describe('OrbitDB CLI - Demo', function () {
   })
 
   it('displays progress bar', () => {
-    assert.equal(result.includes(`Loading database '/orbitdb/demo' ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 0/1 |   0.0% | 00:00:00`), true)
+    assert.equal(result.includes(`████████████████████████████████████████ 1/1 | 100.0%`), true)
   })
 
   it('finds the added entry', () => {

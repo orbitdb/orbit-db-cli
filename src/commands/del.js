@@ -15,7 +15,7 @@ const del = (db, key) => {
 /* Export as Yargs command */
 exports.command = 'del <database> <key>'
 exports.aliases = ['delete', 'remove']
-exports.desc = 'Delete an entry from a database. Only valid for data types of: docstore|keyvalue|feed.'
+exports.desc = 'Delete an entry from a database. Only valid for data types of: docstore|keyvalue|feed'
 
 exports.builder = function (yargs) {
   return yargs

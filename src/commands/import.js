@@ -1,6 +1,7 @@
 'use strict'
 
 const path = require('path')
+const openDatabase = require('../lib/open-database')
 const createDatabase = require('../lib/create-database')
 const outputTimer = require('../lib/output-timer')
 const exitOnError = require('../exit-on-error')
@@ -14,8 +15,8 @@ const trimField = (e, name) => {
   return e[name] = e[name] ? e[name].substr(1, e[name].length - 2).trimLeft().trimRight() : null
 }
 
-const importCsv = (db, filename, options) => {
-  process.stdout.write(`Import '${filename}' to '${db.dbname}' `)
+const importCsv = async (db, filename, options) => {
+  process.stdout.write(`Importing to '${db.dbname}' `)
 
   const startTime = new Date().getTime()
   const limit = options ? options.limit : -1
@@ -36,13 +37,24 @@ const importCsv = (db, filename, options) => {
   }
 
   // process.stdout.write(`\nCSV read, writing to database...\n`, lines.length)
-  return db.batchPut(lines, onProgress)
-    .then(() => {
-      const deltaTime = new Date().getTime() - startTime
-      const duration = new Date(deltaTime).toISOString().substr(11, 8)
-      process.stdout.write(`\nImported ${linesImported} lines in ${duration}\n`)
-      return
-    })
+  let delta = new Date().getTime()
+  for (let i = 0; i < lines.length; i ++) {
+    const hash = await db.put(lines[i])
+    const t = new Date().getTime()
+    const deltaTime = new Date().getTime() - delta
+    delta = t
+    process.stdout.write(`\r${deltaTime}ms`)
+    onProgress(hash)
+  }
+  const duration = new Date(deltaTime).toISOString().substr(11, 8)
+  process.stdout.write(`\nImported ${linesImported} lines in ${duration}\n`)
+  // return db.batchPut(lines, onProgress)
+  //   .then(() => {
+  //     const deltaTime = new Date().getTime() - startTime
+  //     const duration = new Date(deltaTime).toISOString().substr(11, 8)
+  //     process.stdout.write(`\nImported ${linesImported} lines in ${duration}\n`)
+  //     return
+  //   })
 }
 
 /* Export as Yargs command */
@@ -57,6 +69,11 @@ exports.builder = function (yargs) {
       describe: 'Field to index by',
       default: '_id',
     })
+    .option('progress', {
+      alias: 'p',
+      describe: 'Display pretty progress bars',
+      default: false,
+    })
 }
 
 exports.handler = (argv) => {
@@ -68,8 +85,8 @@ exports.handler = (argv) => {
     trimFields: ['name'],
   }
 
-  return createDatabase(argv.database, 'docstore', argv)
-    .then((db) => hookProgressOutput(db, argv, `Import '${argv.file}' to`, startTime))
+  return openDatabase(argv.database, argv, 'docstore')
+    .then((db) => hookProgressOutput(db, argv, `Importing to`, startTime))
     .then((db) => importCsv(db, argv.file, options))
     .catch(exitOnError)
     .then(() => outputTimer(startTime, argv))

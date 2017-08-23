@@ -1,17 +1,12 @@
 'use strict'
 
-const openDatabase = require('../lib/open-database')
-const outputTimer = require('../lib/output-timer')
-const exitOnError = require('../exit-on-error')
-const validateDatabaseType = require('../validate-database-type')
+const runCommand = require('../lib/run-command')
 
-const put = (db, doc, options) => {
+const put = async (db, doc, options) => {
   const startTime = new Date().getTime()
-  return db.put(doc)
-    .then((hash) => {
-      const duration = new Date().getTime() - startTime
-      process.stdout.write(`Added document '${doc[options.indexBy || '_id']}'\n`)
-    })
+  const hash = await db.put(doc)
+  const duration = new Date().getTime() - startTime
+  process.stdout.write(`Added document '${doc[options.indexBy || '_id']}'\n`)
 }
 
 /* Export as Yargs command */
@@ -24,15 +19,9 @@ exports.builder = function (yargs) {
              '\nAdd a document to the database, index by the field \'content\'')
 }
 
-exports.handler = (argv) => {
-  const startTime = new Date().getTime()
-  return openDatabase(argv.database, argv, 'docstore')
-    .then((db) => validateDatabaseType(db, 'docstore'))
-    .then((db) => {
-      return put(db, JSON.parse(argv.document), { limit: argv.limit || -1, indexBy: argv.indexBy })
-        .then(() => db.saveSnapshot())
-    })
-    .catch(exitOnError)
-    .then(() => outputTimer(startTime, argv))
-    .then(() => process.exit(0))
+exports.handler = async (argv) => {
+  // Run the command on database 'argv.database', supported database type is docstore
+  await runCommand(argv.database, ['docstore'], argv, async (db) => {
+    return await put(db, JSON.parse(argv.document), { indexBy: argv.indexBy })
+  })
 }
