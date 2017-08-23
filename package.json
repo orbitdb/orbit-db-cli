@@ -13,15 +13,12 @@
   },
   "main": "src/bin.js",
   "dependencies": {
-    "bs58": "^4.0.1",
     "ipfs": "^0.25.1",
-    "libp2p-floodsub": "^0.11.0",
-    "logplease": "^1.2.12",
+    "logplease": "^1.2.14",
     "orbit-db": "github:orbitdb/orbit-db#feat/cli",
     "orbit-db-store": "github:orbitdb/orbit-db-store#feat/cli",
     "p-whilst": "^1.0.0",
     "progress-string": "^1.2.1",
-    "single-line-log": "^1.1.2",
     "wrtc": "0.0.62",
     "yargs": "^8.0.2"
   },

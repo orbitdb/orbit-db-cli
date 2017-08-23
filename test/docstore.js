@@ -5,7 +5,7 @@ const assert = require('assert')
 const CLI = require('./cli')
 
 describe('OrbitDB CLI - Document Database', function () {
-  this.timeout(5000)
+  this.timeout(10000)
 
   const dbname = '/testdb'
 
