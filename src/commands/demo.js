@@ -16,6 +16,7 @@ exports.builder = function (yargs) {
 }
 
 exports.handler = (argv) => {
+  const bin = argv['$0']
   const dbname = '/orbitdb/demo'
   const startTime = new Date().getTime()
   const testData = JSON.stringify({
@@ -23,22 +24,28 @@ exports.handler = (argv) => {
     name: argv.name,
   })
 
-  // console.log(">>", argv)
-  const bin = argv['$0']
-  const put = `put ${dbname} "${testData.replace(/\"/g, '\\"')}" --indexBy name`
-  const search = `get ${dbname} "${argv.name}" --progress`
-  const drop = `drop ${dbname} yes`
+  let address  
 
   process.stdout.write(logo + '\n')
 
+  const create = `create ${dbname} docstore`
+  process.stdout.write(`> node "${bin}" ${create}\n`)
+  const output0 = cli(create)
+  process.stdout.write(output0.toString() + '\n')
+
+  address = output0.toString().replace('\n', '')
+
+  const put = `put ${address} "${testData.replace(/\"/g, '\\"')}" --indexBy name`
   process.stdout.write(`> node "${bin}" ${put}\n`)
   const output1 = cli(put)
   process.stdout.write(output1.toString() + '\n')
 
+  const search = `get ${address} "${argv.name}" --progress`
   process.stdout.write(`> node "${bin}" ${search}\n`)
   const output2 = cli(search)
   process.stdout.write(output2.toString() + '\n')
 
+  const drop = `drop ${address} yes`
   process.stdout.write(`> node "${bin}" ${drop}\n`)
   const output3 = cli(drop)
   process.stdout.write(output3.toString() + '\n')

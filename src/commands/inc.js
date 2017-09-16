@@ -1,27 +1,16 @@
 'use strict'
 
-const Logger = require('logplease')
-const logger = Logger.create('counter-inc', { color: Logger.Colors.Yellow })
+const runCommand = require('../lib/run-command')
 
-const openDatabase = require('../lib/open-database')
-const outputTimer = require('../lib/output-timer')
-const exitOnError = require('../exit-on-error')
-const validateDatabaseType = require('../validate-database-type')
-
-const increase = (db, increment, options) => {
-  const startTime = new Date().getTime()
-  return db.inc(increment)
-    .then((hash) => {
-      const duration = new Date().getTime() - startTime
-      process.stdout.write(db.value + '\n')
-      logger.debug(`Counter increase took ${duration} ms`)
-    })
+const increase = async (db, increment, options) => {
+  const hash = await db.inc(increment)
+  process.stdout.write(db.value + '\n')
 }
 
 /* Export as Yargs command */
-exports.command = 'inc <database> [<value>]'
+exports.command = 'inc <database> [<increment>]'
 exports.aliases = 'increase'
-exports.desc = 'Increase the value of a counter database'
+exports.desc = 'Increase the value of a counter database. Default increment is 1.'
 
 exports.builder = function (yargs) {
   return yargs
@@ -31,23 +20,17 @@ exports.builder = function (yargs) {
              '\nIncrease the counter /stats/score by 2')
 }
 
-exports.handler = (argv) => {
-  const startTime = new Date().getTime()
-  return openDatabase(argv.database, argv, 'counter')
-    .then((db) => validateDatabaseType(db, 'counter'))
-    .then((db) => {
-      const value = parseInt(argv.value)
+exports.handler = async (argv) => {
+  const increment = parseInt(argv.increment)
+  const operation = async (db) => {
+   if (!increment && argv.increment)
+      throw new Error(`Invalid input value '${argv.increment}'. Input must be a number.`)
 
-     if (!value && argv.value)
-        throw new Error(`Invalid input value '${argv.value}'. Input must be a number.`)
+    if (increment && increment < 1 || increment === 0)
+      throw new Error(`Invalid input value ${argv.increment}. Input must be greater than 0.`)
 
-      if (value && value < 1 || value === 0)
-        throw new Error(`Invalid input value ${argv.value}. Input must be greater than 0.`)
+    await increase(db, increment || 1)
+  }
 
-      return increase(db, value || 1)
-       .then(() => db.saveSnapshot())
-    })
-    .catch(exitOnError)
-    .then(() => outputTimer(startTime, argv))
-    .then(() => process.exit(0))
+  await runCommand(argv.database, ['counter'], argv, operation)
 }

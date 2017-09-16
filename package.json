@@ -13,18 +13,17 @@
   },
   "main": "src/bin.js",
   "dependencies": {
-    "ipfs": "^0.25.1",
-    "logplease": "^1.2.14",
+    "ipfs": "~0.25.1",
+    "logplease": "~1.2.14",
     "orbit-db": "github:orbitdb/orbit-db#feat/cli",
-    "orbit-db-store": "github:orbitdb/orbit-db-store#feat/cli",
-    "p-whilst": "^1.0.0",
-    "progress-string": "^1.2.1",
-    "wrtc": "0.0.62",
-    "yargs": "^8.0.2"
+    "p-whilst": "~1.0.0",
+    "progress-string": "~1.2.1",
+    "yargs": "~8.0.2"
   },
   "devDependencies": {
-    "mocha": "^3.5.0",
-    "multihashes": "^0.4.5"
+    "mocha": "~3.5.0",
+    "multihashes": "~0.4.5",
+    "rimraf": "~2.6.1"
   },
   "scripts": {
     "test": "IPFS_PATH=/tmp/orbit-db-cli-tests mocha"

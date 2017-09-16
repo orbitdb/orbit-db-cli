@@ -18,7 +18,7 @@ const hookProgressOutput = (db, argv, loadingText, startTime) => {
   }
 
   db.events.on('progress.load', onProgress)
-  // db.events.on('progress.init', onProgress)
+
   db.events.on('load', () => {
     if (argv.progress === true && argv.output !== 'json') {
       outputProgress(loadingText, db.dbname, 0, 1, startTime)

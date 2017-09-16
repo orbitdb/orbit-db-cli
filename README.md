@@ -41,7 +41,7 @@ Usage: src/bin.js <command> <database>
 Commands:
   add <database> <event>             Add an event to an eventlog or feed
                                      database
-  create <database> <type>           Create a new database. Type can be one of:
+  create <name> <type>           	Create a new database. Type can be one of:
                                      eventlog|feed|docstore|keyvalue|counter
                                                                   [aliases: new]
   del <database> <key>               Delete an entry from a database. Only valid
@@ -62,11 +62,14 @@ Commands:
   info <database>                    Show information about a database
                                                                [aliases: status]
   put <database> <document>          Add a document to a document database
+  replicate <database>               Replicate a database with peers.
   set <database> <key> <value>       Set a value of a key in KeyValue database
 
 Options:
   -h, --help  Show help                                                  [boolean]
 ```
+
+`orbit-db` will create a data directory at `./orbitdb` that contains orbitdb's local data files, keys and the data blocks of IPFS. Each database is saved under IPFS peer ID, eg. database `hello` is saved in `./orbitdb/QmchYcbnNYgJZNapnkHZTWHXJiNVgBp6T7KpoL381nUon5/hello.orbitdb`. The IPFS peer ID is used to determine the *owner* of the database.
 
 ## Demo
 
@@ -87,12 +90,15 @@ Output:
              Peer-to-Peer Database
        https://github.com/orbitdb/orbit-db
 
-> node "src/bin.js" put /orbitdb/demo "{\"_id\":1,\"name\":\"FRANK!\"}" --indexBy name
+> node "src/bin.js" create /orbitdb/demo docstore
+/orbitdb/QmcE2HMrDTL3SFV1rcB5GaJVSJFfpFsnfTM4qK8SRScjyj/demo
+
+> node "src/bin.js" put /orbitdb/QmcE2HMrDTL3SFV1rcB5GaJVSJFfpFsnfTM4qK8SRScjyj/demo "{\"_id\":1,\"name\":\"FRANK!\"}" --indexBy name
 Added document 'FRANK!'
 
-> node "src/bin.js" get /orbitdb/demo "FRANK!" --progress
-Loading database '/orbitdb/demo' ████████████████████████████████████████████████ 1/1 | 100.0% | 00:00:00
-Searching for 'FRANK!' from '/orbitdb/demo'
+> node "src/bin.js" get /orbitdb/QmcE2HMrDTL3SFV1rcB5GaJVSJFfpFsnfTM4qK8SRScjyj/demo "FRANK!" --progress
+Loading '/orbitdb/QmcE2HMrDTL3SFV1rcB5GaJVSJFfpFsnfTM4qK8SRScjyj/demo' ██████████████████████████████████████████ 1/1 | 100.0% | 00:00:00
+Searching for 'FRANK!' from '/orbitdb/QmcE2HMrDTL3SFV1rcB5GaJVSJFfpFsnfTM4qK8SRScjyj/demo'
 ┌────────────────────────────────────────────────────────────────┬───┐
 │name                                                            │_id│
 ├────────────────────────────────────────────────────────────────┼───┤
@@ -100,11 +106,68 @@ Searching for 'FRANK!' from '/orbitdb/demo'
 └────────────────────────────────────────────────────────────────┴───┘
 Found 1 matches (0 ms)
 
-> node "src/bin.js" drop /orbitdb/demo yes
-Dropped database '/orbitdb/demo'
+> node "src/bin.js" drop /orbitdb/QmcE2HMrDTL3SFV1rcB5GaJVSJFfpFsnfTM4qK8SRScjyj/demo yes
+Dropped database '/orbitdb/QmcE2HMrDTL3SFV1rcB5GaJVSJFfpFsnfTM4qK8SRScjyj/demo'
 
 Demo finished!
 ```
+
+## Replicate
+
+Demo:
+
+<a href="https://asciinema.org/a/h6JaCcm3TnlMQox9pE7kRKtoR"><img src="https://asciinema.org/a/h6JaCcm3TnlMQox9pE7kRKtoR.png" width="50%"/></a>
+
+Run in the terminal:
+
+```
+node src/bin.js create a eventlog
+```
+
+Copy the address the above command output. Eg. `/orbitdb/QmQxfgdjo3EQZiqBgt4uDiJNoLNedRNCZTHCquohxScsXc/a`.
+
+In a second terminal, run:
+
+```
+mkdir tmp/ && cd tmp/
+node ../src/bin.js replicate /<address> --progress --dashboard
+```
+
+*Eg. `node ../src/bin.js replicate /orbitdb/QmQxfgdjo3EQZiqBgt4uDiJNoLNedRNCZTHCquohxScsXc/a --progress --dashboard`*
+
+Output:
+```
+Replicating '/orbitdb/QmQxfgdjo3EQZiqBgt4uDiJNoLNedRNCZTHCquohxScsXc/a'
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 0/0 |   0.0% | 00:00:00
+┌─────────────────────────────────────────────────────────────────────┐
+└─────────────────────────────────────────────────────────────────────┘
+Tasks running: 0 | Queued: 0
+```
+
+In the first terminal, run:
+```
+node src/bin.js add /<address> hi! -r --sync --interval 1000
+```
+
+Observe the database replicating to the second instance.
+
+Output:
+```
+Replicating ██████████████████████████░░░░░░░░░░░░░░ 2/3 |  66.7% | 00:00:21
+┌───────────────────────────────────────────────────────────────────────────┐
+│OO.                                                                        │
+└───────────────────────────────────────────────────────────────────────────┘
+Tasks running: 1 | Queued: 1
+```
+
+```
+Replicating ████████████████████████████████████████ 77/77 |  100.0% | 00:02:31
+┌─────────────────────────────────────────────────────────────────────────────┐
+│OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO│
+└─────────────────────────────────────────────────────────────────────────────┘
+Tasks running: 0 | Queued: 0
+```
+
 
 ## Dev
 
