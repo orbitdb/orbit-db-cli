@@ -2,7 +2,7 @@
 
 const outputTimer = require('../lib/output-timer')
 const logo = require('../logo')
-const cli = require('../../test/cli')
+const cli = require('../../src/cli')
 
 /* Export as Yargs command */
 exports.command = 'demo <name>'

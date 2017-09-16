@@ -10,6 +10,14 @@
 * npm
 
 ## Install
+From Npm:
+
+```
+npm install -g orbit-db-cli
+```
+
+From Git:
+
 ```
 git clone https://github.com/haadcode/orbit-db-cli.git
 cd orbit-db-cli/
@@ -18,8 +26,10 @@ npm install
 
 ## Run
 
+*When installed from Git, the CLI can be run with `node ./src/bin`*
+
 ```
-node ./src/bin
+orbitdb
 ```
 
 Output:
@@ -36,7 +46,7 @@ Output:
        https://github.com/orbitdb/orbit-db
 
 
-Usage: src/bin.js <command> <database>
+Usage: orbitdb <command> <database>
 
 Commands:
   add <database> <event>             Add an event to an eventlog or feed
@@ -122,7 +132,7 @@ Demo:
 Run in the terminal:
 
 ```
-node src/bin.js create a eventlog
+orbitdb create a eventlog
 ```
 
 Copy the address the above command output. Eg. `/orbitdb/QmQxfgdjo3EQZiqBgt4uDiJNoLNedRNCZTHCquohxScsXc/a`.
@@ -131,10 +141,10 @@ In a second terminal, run:
 
 ```
 mkdir tmp/ && cd tmp/
-node ../src/bin.js replicate /<address> --progress --dashboard
+orbitdb replicate /<address> --progress --dashboard
 ```
 
-*Eg. `node ../src/bin.js replicate /orbitdb/QmQxfgdjo3EQZiqBgt4uDiJNoLNedRNCZTHCquohxScsXc/a --progress --dashboard`*
+*Eg. `orbitdb replicate /orbitdb/QmQxfgdjo3EQZiqBgt4uDiJNoLNedRNCZTHCquohxScsXc/a --progress --dashboard`*
 
 Output:
 ```
@@ -147,7 +157,7 @@ Tasks running: 0 | Queued: 0
 
 In the first terminal, run:
 ```
-node src/bin.js add /<address> hi! -r --sync --interval 1000
+orbitdb add /<address> hi! -r --sync --interval 1000
 ```
 
 Observe the database replicating to the second instance.
