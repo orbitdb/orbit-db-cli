@@ -41,7 +41,7 @@ Usage: src/bin.js <command> <database>
 Commands:
   add <database> <event>             Add an event to an eventlog or feed
                                      database
-  create <name> <type>           	Create a new database. Type can be one of:
+  create <name> <type>               Create a new database. Type can be one of:
                                      eventlog|feed|docstore|keyvalue|counter
                                                                   [aliases: new]
   del <database> <key>               Delete an entry from a database. Only valid
@@ -97,7 +97,8 @@ Output:
 Added document 'FRANK!'
 
 > node "src/bin.js" get /orbitdb/QmcE2HMrDTL3SFV1rcB5GaJVSJFfpFsnfTM4qK8SRScjyj/demo "FRANK!" --progress
-Loading '/orbitdb/QmcE2HMrDTL3SFV1rcB5GaJVSJFfpFsnfTM4qK8SRScjyj/demo' ██████████████████████████████████████████ 1/1 | 100.0% | 00:00:00
+Loading '/orbitdb/QmcE2HMrDTL3SFV1rcB5GaJVSJFfpFsnfTM4qK8SRScjyj/demo' 
+██████████████████████████████████████████ 1/1 | 100.0% | 00:00:00
 Searching for 'FRANK!' from '/orbitdb/QmcE2HMrDTL3SFV1rcB5GaJVSJFfpFsnfTM4qK8SRScjyj/demo'
 ┌────────────────────────────────────────────────────────────────┬───┐
 │name                                                            │_id│
