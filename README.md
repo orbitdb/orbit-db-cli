@@ -2,7 +2,34 @@
 
 [![CircleCI](https://circleci.com/gh/haadcode/orbit-db-cli.svg?style=svg)](https://circleci.com/gh/haadcode/orbit-db-cli)
 
-**Work in progress!**
+A CLI tool to manage [orbit-db](https://github.com/orbitdb/orbit-db) databases.
+
+## Quick Start
+
+```
+$ orbitdb create hello feed
+/orbitdb/QmfSUsdr34iGio68eMezDzZLCKZTnbsxNJgiNipimZtpi1/hello
+
+$ orbitdb add /orbitdb/QmfSUsdr34iGio68eMezDzZLCKZTnbsxNJgiNipimZtpi1/hello "world"
+Added QmSwYZheHVa3eWf83XwnWNJtjGG7EWjiWTaTKLeFozVRnz
+
+$ orbitdb get /orbitdb/QmfSUsdr34iGio68eMezDzZLCKZTnbsxNJgiNipimZtpi1/hello
+"world"
+
+$ orbitdb del /orbitdb/QmfSUsdr34iGio68eMezDzZLCKZTnbsxNJgiNipimZtpi1/hello QmSwYZheHVa3eWf83XwnWNJtjGG7EWjiWTaTKLeFozVRnz
+Deleted QmZoeiNn1rmfmNJZSknm65gqXqsLrcHi7GiZrd2fBh1hK8
+
+$ orbitdb get /orbitdb/QmfSUsdr34iGio68eMezDzZLCKZTnbsxNJgiNipimZtpi1/hello
+Database '/orbitdb/QmfSUsdr34iGio68eMezDzZLCKZTnbsxNJgiNipimZtpi1/hello' is empty!
+
+$ orbitdb info hello
+/orbitdb/QmfSUsdr34iGio68eMezDzZLCKZTnbsxNJgiNipimZtpi1/hello
+> Type: feed
+> Owner: QmfSUsdr34iGio68eMezDzZLCKZTnbsxNJgiNipimZtpi1
+> Data file: ./orbitdb/QmfSUsdr34iGio68eMezDzZLCKZTnbsxNJgiNipimZtpi1/hello.orbitdb
+> Entries: 0
+> Oplog length: 2
+```
 
 ## Requirements
 
@@ -26,10 +53,16 @@ npm install
 
 ## Run
 
-*When installed from Git, the CLI can be run with `node ./src/bin`*
-
 ```
 orbitdb
+```
+
+*When installed from Git, the CLI can be run with `node ./src/bin`*
+
+For complete guide on usage, see the CLI help:
+
+```
+orbitdb help
 ```
 
 Output:
@@ -49,13 +82,14 @@ Output:
 Usage: orbitdb <command> <database>
 
 Commands:
-  add <database> <event>             Add an event to an eventlog or feed
-                                     database
-  create <name> <type>               Create a new database. Type can be one of:
+  add <database> [<data>]            Add an entry to an eventlog or feed
+                                     database. Can be only used on:
+                                     eventlog|feed
+  create <database> <type>           Create a new database. Type can be one of:
                                      eventlog|feed|docstore|keyvalue|counter
                                                                   [aliases: new]
   del <database> <key>               Delete an entry from a database. Only valid
-                                     for data types of: docstore|keyvalue|feed.
+                                     for data types of: docstore|keyvalue|feed
                                                        [aliases: delete, remove]
   demo <name>                        Runs a sequence of commands as an example
                                                                  [aliases: tour]
@@ -65,10 +99,11 @@ Commands:
                                                               [aliases: destroy]
   get <database> [<search>]          Query the database.
                                                         [aliases: query, search]
+  id                                 Show information about current orbit-db id
   import <file> <database> <schema>  Import a CSV file to a document database
                                                                   [aliases: csv]
-  inc <database> [<value>]           Increase the value of a counter database
-                                                             [aliases: increase]
+  inc <database> [<increment>]       Increase the value of a counter database.
+                                     Default increment is 1. [aliases: increase]
   info <database>                    Show information about a database
                                                                [aliases: status]
   put <database> <document>          Add a document to a document database
@@ -76,10 +111,16 @@ Commands:
   set <database> <key> <value>       Set a value of a key in KeyValue database
 
 Options:
-  -h, --help  Show help                                                  [boolean]
+  -h, --help  Show help                                                [boolean]
 ```
 
-`orbit-db` will create a data directory at `./orbitdb` that contains orbitdb's local data files, keys and the data blocks of IPFS. Each database is saved under IPFS peer ID, eg. database `hello` is saved in `./orbitdb/QmchYcbnNYgJZNapnkHZTWHXJiNVgBp6T7KpoL381nUon5/hello.orbitdb`. The IPFS peer ID is used to determine the *owner* of the database.
+### Data Directories and Paths
+
+By default, `orbit-db` creates a data directory `./orbitdb` under which metadata of databases is stored along with the actual data blocks saved in IPFS. The metadata can be found under `./orbitdb/QmFoo/database.orbitdb` for each database. The data blocks saved in IPFS are in `./orbitdb/ipfs`.
+
+To use another `orbit-db` data directory (as opposed to the default `./orbitdb`), set `ORBITDB_PATH` environment variable to point to the desired data directory. Eg. run the CLI with `ORBITDB_PATH=/path/orbitdb orbitdb ...`
+
+ To use `orbit-db` with an existing IPFS data repository, set the `IPFS_PATH` environment variable to the desired IPFS repository path. Eg. run the CLI with `IPFS_PATH=/path/to/ipfs orbitdb ...`
 
 ## Demo
 
@@ -141,7 +182,7 @@ In a second terminal, run:
 
 ```
 mkdir tmp/ && cd tmp/
-orbitdb replicate /<address> --progress --dashboard
+orbitdb replicate <address> --progress --dashboard
 ```
 
 *Eg. `orbitdb replicate /orbitdb/QmQxfgdjo3EQZiqBgt4uDiJNoLNedRNCZTHCquohxScsXc/a --progress --dashboard`*
@@ -157,7 +198,7 @@ Tasks running: 0 | Queued: 0
 
 In the first terminal, run:
 ```
-orbitdb add /<address> hi! -r --sync --interval 1000
+orbitdb add <address> hi! -r --sync --interval 1000
 ```
 
 Observe the database replicating to the second instance.
