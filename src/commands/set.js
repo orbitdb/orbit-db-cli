@@ -18,7 +18,7 @@ const set = (db, key, value, options) => {
 exports.command = 'set <database> <key> <value>'
 exports.desc = 'Set a value of a key in KeyValue database'
 
-exports.builder = function (yargs) {
+exports.builder = (yargs) => {
   return yargs
     .example('\n$0 set logins.last id haad',
              '\nSet key id to haad in logins.last database')

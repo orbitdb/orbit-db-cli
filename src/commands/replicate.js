@@ -9,7 +9,7 @@ exports.command = 'replicate <database>'
 exports.aliases = []
 exports.desc = 'Replicate a database with peers.'
 
-exports.builder = function (yargs) {
+exports.builder = (yargs) => {
   return yargs
     .usage(`Usage: $0 replicate <database>`)
     .example('\n$0 replicate /counter1',

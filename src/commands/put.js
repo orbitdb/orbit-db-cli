@@ -13,7 +13,7 @@ const put = async (db, doc, options) => {
 exports.command = 'put <database> <document>'
 exports.desc = 'Add a document to a document database'
 
-exports.builder = function (yargs) {
+exports.builder = (yargs) => {
   return yargs
     .example('\n$0 put /posts "{\\"id\\":\\"1\\",\\"author\\":\\"haad\\",\\"content\\":\\"Hello friend\\"}" --indexBy content',
              '\nAdd a document to the database, index by the field \'content\'')

@@ -11,7 +11,7 @@ exports.command = 'get <database> [<search>]'
 exports.aliases = ['query', 'search']
 exports.desc = 'Query the database.\n'
 
-exports.builder = function (yargs) {
+exports.builder = (yargs) => {
   return yargs
     .usage('This command is used to query a database in orbit-db.\n' +
            '\nUsage: $0 get|search|query <database> [<search>]')
