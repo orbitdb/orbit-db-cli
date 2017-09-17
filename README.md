@@ -111,6 +111,7 @@ Commands:
   put <database> <document>          Add a document to a document database
   replicate <database>               Replicate a database with peers.
   set <database> <key> <value>       Set a value of a key in KeyValue database
+  version                            Show information about current orbit-db
 
 Options:
   -h, --help  Show help                                                [boolean]
