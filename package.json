@@ -16,7 +16,9 @@
     "ipfs": "~0.25.1",
     "logplease": "~1.2.14",
     "orbit-db": "github:orbitdb/orbit-db#feat/cli",
+    "p-map-series": "^1.0.0",
     "p-whilst": "~1.0.0",
+    "pipe-args": "^1.3.0",
     "progress-string": "~1.2.1",
     "yargs": "~8.0.2"
   },
