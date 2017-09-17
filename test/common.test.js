@@ -6,6 +6,7 @@ const multihash = require('multihashes')
 const rmrf = require('rimraf')
 const OrbitDB = require('orbit-db')
 const CLI = require('./cli')
+const packageConfig = require('./../package.json');
 
 describe('OrbitDB CLI - Common', function () {
   this.timeout(20000)
@@ -136,12 +137,12 @@ describe('OrbitDB CLI - Common', function () {
   describe('version', () => {
     it('shows current version of orbit db', () => {
       const version = CLI(`version`)
-      assert.equal(version.toString().replace('\n', ''),'0.0.8')
+      assert.equal(version.toString().replace('\n', ''),packageConfig.version)
     })
 
     it('alias also shows version of orbit db', () => {
       const version = CLI(`v`)
-      assert.equal(version.toString().replace('\n', ''),'0.0.8')
+      assert.equal(version.toString().replace('\n', ''),packageConfig.version)
     })
   })
 
