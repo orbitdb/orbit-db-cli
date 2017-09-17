@@ -5,10 +5,9 @@ const outputTimer = require('../lib/output-timer')
 const exitOnError = require('../exit-on-error')
 
 const del = (db, key) => {
-  // process.stdout.write(`Delete '${key}' from '${db.dbname}'`)
   return db.del(key)
-    .then((hash) => {
-      process.stdout.write(`Deleted ${hash}\n`)
+    .then(() => {
+      process.stdout.write(`Deleted ${key}\n`)
     })
 }
 

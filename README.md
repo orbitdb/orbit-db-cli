@@ -19,7 +19,7 @@ $ orbitdb get /orbitdb/QmfSUsdr34iGio68eMezDzZLCKZTnbsxNJgiNipimZtpi1/hello
 "world"
 
 $ orbitdb del /orbitdb/QmfSUsdr34iGio68eMezDzZLCKZTnbsxNJgiNipimZtpi1/hello QmSwYZheHVa3eWf83XwnWNJtjGG7EWjiWTaTKLeFozVRnz
-Deleted QmZoeiNn1rmfmNJZSknm65gqXqsLrcHi7GiZrd2fBh1hK8
+Deleted QmSwYZheHVa3eWf83XwnWNJtjGG7EWjiWTaTKLeFozVRnz
 
 $ orbitdb get /orbitdb/QmfSUsdr34iGio68eMezDzZLCKZTnbsxNJgiNipimZtpi1/hello
 Database '/orbitdb/QmfSUsdr34iGio68eMezDzZLCKZTnbsxNJgiNipimZtpi1/hello' is empty!
