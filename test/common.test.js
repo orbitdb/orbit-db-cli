@@ -132,4 +132,17 @@ describe('OrbitDB CLI - Common', function () {
       assert.equal(err, 'Error: No input data!')
     })
   })
+
+  describe('version', () => {
+    it('shows current version of orbit db', () => {
+      const version = CLI(`version`)
+      assert.equal(version.toString().replace('\n', ''),'0.0.8')
+    })
+
+    it('alias also shows version of orbit db', () => {
+      const version = CLI(`v`)
+      assert.equal(version.toString().replace('\n', ''),'0.0.8')
+    })
+  })
+
 })
