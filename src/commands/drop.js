@@ -13,7 +13,7 @@ exports.command = 'drop <database> yes'
 exports.aliases = ['destroy']
 exports.desc = 'Remove a database locally. This doesn\'t remove data on other nodes that have the removed database replicated.'
 
-exports.builder = function (yargs) {
+exports.builder = (yargs) => {
   return yargs
     .usage(`Usage: $0 drop <database> yes`)
 }

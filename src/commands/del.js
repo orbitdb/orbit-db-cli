@@ -16,7 +16,7 @@ exports.command = 'del <database> <key>'
 exports.aliases = ['delete', 'remove']
 exports.desc = 'Delete an entry from a database. Only valid for data types of: docstore|keyvalue|feed'
 
-exports.builder = function (yargs) {
+exports.builder = (yargs) => {
   return yargs
     .example('\n$0 del /posts "hello"',
              '\nDelete entry from a document or key-value database with key "hello"')

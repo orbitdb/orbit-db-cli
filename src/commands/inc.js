@@ -12,7 +12,7 @@ exports.command = 'inc <database> [<increment>]'
 exports.aliases = 'increase'
 exports.desc = 'Increase the value of a counter database. Default increment is 1.'
 
-exports.builder = function (yargs) {
+exports.builder = (yargs) => {
   return yargs
     .example('\n$0 inc /stats/score',
              '\nIncrease the counter /stats/score by 1')

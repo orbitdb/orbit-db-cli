@@ -9,7 +9,7 @@ exports.command = 'demo <name>'
 exports.aliases = ['tour']
 exports.desc = 'Runs a sequence of commands as an example'
 
-exports.builder = function (yargs) {
+exports.builder = (yargs) => {
   return yargs
     .usage(`${logo}\nUsage: $0 ${exports.command}`)
     .example('n$0 demo Frank', '\nRuns the demo with name \'Frank\'')

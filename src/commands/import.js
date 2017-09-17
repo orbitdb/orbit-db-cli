@@ -62,7 +62,7 @@ exports.command = 'import <file> <database> <schema>'
 exports.aliases = ['csv']
 exports.desc = 'Import a CSV file to a document database'
 
-exports.builder = function (yargs) {
+exports.builder = (yargs) => {
   return yargs
     .option('indexBy', {
       alias: 'idx',

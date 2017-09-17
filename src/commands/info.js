@@ -10,7 +10,7 @@ exports.command = 'info <database>'
 exports.aliases = 'status'
 exports.desc = 'Show information about a database'
 
-exports.builder = function (yargs) {
+exports.builder = (yargs) => {
   return yargs
     .usage(`Usage: $0 info <database>`)
     .example('\n$0 info /posts',

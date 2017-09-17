@@ -11,7 +11,7 @@ exports.command = 'id'
 exports.aliases = []
 exports.desc = 'Show information about current orbit-db id'
 
-exports.builder = function (yargs) {
+exports.builder = (yargs) => {
   return yargs
     .usage(`Usage: $0 id`)
 }
