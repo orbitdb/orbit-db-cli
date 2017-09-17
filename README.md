@@ -1,5 +1,6 @@
 # orbitdb - CLI for orbit-db
 
+[![npm version](https://badge.fury.io/js/orbit-db-cli.svg)](https://badge.fury.io/js/orbit-db-cli)
 [![CircleCI](https://circleci.com/gh/haadcode/orbit-db-cli.svg?style=svg)](https://circleci.com/gh/haadcode/orbit-db-cli)
 
 A CLI tool to manage [orbit-db](https://github.com/orbitdb/orbit-db) databases.
