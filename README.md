@@ -231,3 +231,7 @@ Tasks running: 0 | Queued: 0
 ```
 node src/bin.js import 2017.csv /t9 src/schemas/csv-schema1.js --progress --limit 5000 --indexBy name
 ```
+
+## License
+
+[MIT](LICENSE) ©️ 2017 Haadcode
