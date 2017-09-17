@@ -2,6 +2,7 @@
 
 [![npm version](https://badge.fury.io/js/orbit-db-cli.svg)](https://badge.fury.io/js/orbit-db-cli)
 [![CircleCI](https://circleci.com/gh/haadcode/orbit-db-cli.svg?style=svg)](https://circleci.com/gh/haadcode/orbit-db-cli)
+[![](https://img.shields.io/badge/freenode-%23orbitdb-blue.svg?style=flat-square)](http://webchat.freenode.net/?channels=%23orbitdb)
 
 A CLI tool to manage [orbit-db](https://github.com/orbitdb/orbit-db) databases.
 
