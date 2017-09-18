@@ -6,6 +6,8 @@
 
 A CLI tool to manage [orbit-db](https://github.com/orbitdb/orbit-db) databases.
 
+<a href="https://asciinema.org/a/JdTmmdBCZarkBkPqbueicwMrG" target="_blank"><img src="https://asciinema.org/a/JdTmmdBCZarkBkPqbueicwMrG.png" width="50%"/></a>
+
 ## Quick Start
 
 ```
