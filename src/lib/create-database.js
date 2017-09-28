@@ -10,11 +10,12 @@ const createDatabase = async (database, type, argv) => {
   const ipfs = await startIpfs(config.ipfsConfig)
   const peerId = await ipfs.config.get('Identity.PeerID')
   // We need to pass the IPFS ID since we're not starting IPFS
-  const orbitdb = new OrbitDB(ipfs, { peerId: peerId })
   const directory = process.env.ORBITDB_PATH || config.defaultDatabaseDir
-  const db = await orbitdb.create(database, type, directory, {
+  const orbitdb = new OrbitDB(ipfs, directory, { peerId: peerId })
+  const db = await orbitdb.create(database, type, {
     indexBy: argv.indexBy,
     replicate: false,
+    key: argv.key,
   })
   await db.saveSnapshot()
   return db

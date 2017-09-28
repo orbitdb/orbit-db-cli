@@ -16,9 +16,9 @@ describe('OrbitDB CLI - Document Database', function () {
   before(() => {
     // Make sure we don't have an existing database
     rmrf.sync('./orbitdb')
-    CLI(`create ${dbname} docstore`)
     id = getId()
-    databaseAddress = OrbitDB.parseAddress(path.join('/', id, dbname))
+    const  result = CLI(`create ${dbname} docstore`)
+    databaseAddress = result.toString().replace('\n', '')
   })
 
   after(() => {
@@ -70,7 +70,6 @@ describe('OrbitDB CLI - Document Database', function () {
     const result = CLI(`del ${databaseAddress} world`)
     assert.equal(result.toString().includes('Deleted'), true)
     const noResults = CLI(`get ${databaseAddress}`)
-    console.log(noResults.toString(), databaseAddress)
     assert.equal(noResults.toString().includes(`Database '${databaseAddress}' is empty!`), true)
   })
 

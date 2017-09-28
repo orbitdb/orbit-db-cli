@@ -1,10 +1,10 @@
 'use strict'
 
 const waitForPeers = (db) => {
-  process.stdout.write(`Searching for peers...`)
+  process.stdout.write(`Searching for peers for '${db.address.toString()}'`)
   return new Promise((resolve, reject) => {
     const interval = setInterval(async () => {
-      const peers = await db._ipfs.pubsub.peers(db.path)
+      const peers = await db._ipfs.pubsub.peers(db.address.toString())
       if (peers.length > 0) {
         clearInterval(interval)
         process.stdout.write(`\nConnected to peers:\n`)

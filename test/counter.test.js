@@ -20,8 +20,9 @@ describe('OrbitDB CLI - Counter Database', function () {
     // Make sure we don't have an existing database
     rmrf.sync('./orbitdb')
     id = getId()
-    databaseAddress = OrbitDB.parseAddress(path.join('/', id, dbname))
-    CLI(`create ${dbname} counter`)
+    // databaseAddress = OrbitDB.parseAddress(path.join('/', id, dbname))
+    const result = CLI(`create ${dbname} counter`)
+    databaseAddress = result.toString().replace('\n', '')
   })
 
   after(() => {
