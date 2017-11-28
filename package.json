@@ -1,12 +1,12 @@
 {
   "name": "orbit-db-cli",
   "version": "0.0.11",
-  "description": "CLI for orbit-db - A distributed p2p database on IPFS",
+  "description": "CLI for OrbitDB - A distributed p2p database on IPFS",
   "author": "Haad",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/haadcode/orbit-db-cli"
+    "url": "https://github.com/orbitdb/orbit-db-cli"
   },
   "bin": {
     "orbitdb": "./src/bin.js"
