@@ -10,18 +10,18 @@ const hookProgressOutput = (db, argv, loadingText, startTime) => {
   const onProgress = (dbname, hash, entry, count, total) => {
     if (argv.progress === true && argv.output !== 'json') {
       if (normalizeTotal(total) > longLoadingLimit && ((count % 100) === 0 || count === normalizeTotal(total))) {
-        outputProgress(loadingText, db.dbname, count, normalizeTotal(total), startTime)
+        outputProgress(loadingText, db.address.toString(), count, normalizeTotal(total), startTime)
       } else if (normalizeTotal(total) <= longLoadingLimit) {
-        outputProgress(loadingText, db.dbname, count, normalizeTotal(total), startTime)
+        outputProgress(loadingText, db.address.toString(), count, normalizeTotal(total), startTime)
       }
     }
   }
 
-  db.events.on('progress.load', onProgress)
+  db.events.on('load.progress', onProgress)
 
   db.events.on('load', () => {
     if (argv.progress === true && argv.output !== 'json') {
-      outputProgress(loadingText, db.dbname, 0, 1, startTime)
+      outputProgress(loadingText, db.address.toString(), 0, 1, startTime)
     }
   })
 

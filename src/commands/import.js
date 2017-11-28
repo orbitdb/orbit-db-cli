@@ -16,7 +16,7 @@ const trimField = (e, name) => {
 }
 
 const importCsv = async (db, filename, options) => {
-  process.stdout.write(`Importing to '${db.dbname}' `)
+  process.stdout.write(`Importing to '${db.address.toString()}' `)
 
   const startTime = new Date().getTime()
   const limit = options ? options.limit : -1
@@ -33,7 +33,7 @@ const importCsv = async (db, filename, options) => {
 
   const onProgress = (entry) => {
     linesImported++
-    db.events.emit('progress.load', db.dbname, null, null, linesImported, lines.length)
+    db.events.emit('progress.load', db.address.toString(), null, null, linesImported, lines.length)
   }
 
   // process.stdout.write(`\nCSV read, writing to database...\n`, lines.length)

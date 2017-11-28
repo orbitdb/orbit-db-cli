@@ -7,7 +7,7 @@ const schemaView = require('../../views/csv-schema1-view')
 
 const doQuery = (db, text, limit, outputJson) => {
   if (!outputJson)
-    process.stdout.write(`Searching for '${text}' from '${db.dbname}'`)
+    process.stdout.write(`Searching for '${text}' from '${db.address.toString()}'`)
 
   const startTime = new Date().getTime()
 
@@ -16,7 +16,7 @@ const doQuery = (db, text, limit, outputJson) => {
     : db.query(e => true) // query all
 
   if (result.length === 0 && Object.keys(db._index._index).length === 0) {
-    process.stdout.write(`\nDatabase '${db.dbname}' is empty!\n`)
+    process.stdout.write(`\nDatabase '${db.address.toString()}' is empty!\n`)
     return Promise.resolve([])
   }
 

@@ -31,10 +31,7 @@ exports.handler = async (argv) => {
     const db = await openDatabase(argv.database, argv)
     await db.drop()
   } catch (e) {
-    if (e.message !== `Database '${argv.database}' doesn't exist.`)
-      exitOnError(e)
-
-    logger.error(e.stack)
+    exitOnError(e)
   }
 
   process.stdout.write(`Dropped database '${argv.database}'\n`)

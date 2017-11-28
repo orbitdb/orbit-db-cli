@@ -19,7 +19,8 @@ describe('OrbitDB CLI - Common', function () {
     // Make sure we don't have an existing database
     rmrf.sync('./orbitdb')
     id = getId()
-    databaseAddress = OrbitDB.parseAddress(path.join('/', id, dbname))
+    databaseAddress = (CLI(`create ${dbname} eventlog`)).toString().replace('\n', '')
+    CLI(`drop ${databaseAddress} yes`)
   })
 
   it('returns multihash ID', () => {
@@ -31,68 +32,75 @@ describe('OrbitDB CLI - Common', function () {
   it('errors if database doesn\'t exist', () => {
     let err
     try {
-      CLI(`info ${dbname}`)
+      CLI(`drop ${databaseAddress} yes`)
+      const oo = CLI(`info ${databaseAddress}`)
+      console.log("...", oo.toString())
     } catch (e) {
       err = e.toString().split('\n')[1]
     }
-    assert.equal(err, `Error: Database '${databaseAddress}' doesn't exist.`)
+    assert.equal(err, `Error: Database '${databaseAddress}' doesn't exist!`)
   })
 
   describe('create', function () {
+    let address
+
     it('creates a database', () => {
       const type = 'counter'
       const result1 = CLI(`create ${dbname} ${type}`)
-      const address = result1.toString().replace('\n', '')
+      address = result1.toString().replace('\n', '')
       const result2 = CLI(`info ${address}`)
+      CLI(`drop ${address} yes`)
       const id = result2.toString().split('\n').find(e => e.indexOf('Owner:') > -1).split(': ')[1]
-      const expected = path.join('/', id, dbname)
-      assert.equal(result1.toString().includes(expected), true)
+      assert.equal(result1.toString().includes('/orbitdb'), true)
+      assert.equal(result1.toString().includes(dbname), true)
     })
 
     it('needs a valid type to create a database', () => {
-      let err, id
-      CLI(`drop ${databaseAddress} yes`)
+      let err
       try {
-        id = getId()
-        CLI(`create ${databaseAddress} abc`)
+        CLI(`create ${dbname} abc`)
       } catch (e) {
         err = e.toString().split('\n')[1]
       }
-      assert.equal(err, `Error: Invalid database type 'abc'.`)
+      assert.equal(err, `Error: Invalid database type 'abc'`)
     })
 
     it('errors if database already exists', () => {
-      let err, id
+      let err, address
       try {
-        id = getId()
-        CLI(`create ${dbname} feed`)
+        address = (CLI(`create ${dbname} feed`)).toString().replace('\n', '')
         CLI(`create ${dbname} feed`)
       } catch (e) {
         err = e.toString().split('\n')[1]
       }
-      assert.equal(err, `Error: Database '${databaseAddress}' already exists!`)
+      assert.equal(err, `Error: Database '${address}' already exists!`)
+      CLI(`drop ${address} yes`)
     })
   })
 
 
   describe('info', function () {
-    it('local database can be referred to with or without the owner ID', () => {
-      // Locally '/QmSv8zWGgtkbqvfviTWT53smb7KKKJwKtoz6aqX4mkrgTx/testdb'
-      // is the same as '/testdb'
-      CLI(`drop ${databaseAddress} yes`)
-      const type = 'counter'
-      const result1 = CLI(`create ${dbname} ${type}`)
-      const address = result1.toString().replace('\n', '')
-      const result2 = CLI(`info ${address}`)
-      const result3 = CLI(`info ${dbname}`)
-      assert.equal(result2.toString(), result3.toString())
-    })
+    // it('local database can be referred to with or without the owner ID', () => {
+    //   // Locally '/QmSv8zWGgtkbqvfviTWT53smb7KKKJwKtoz6aqX4mkrgTx/testdb'
+    //   // is the same as '/testdb'
+    //   CLI(`drop ${databaseAddress} yes`)
+    //   const type = 'counter'
+    //   const result1 = CLI(`create ${dbname} ${type}`)
+    //   const address = result1.toString().replace('\n', '')
+    //   const result2 = CLI(`info ${address}`)
+    //   const result3 = CLI(`info ${dbname}`)
+    //   assert.equal(result2.toString(), result3.toString())
+    // })
 
     it('shows database info', () => {
+      const result1 = CLI(`create ${dbname} eventlog`)
+      const address = result1.toString().replace('\n', '')
       const result = CLI(`info ${databaseAddress}`)
+      console.log(result.toString())
       assert.equal(result.toString().split('\n')[0], databaseAddress)
       assert.equal(result.toString().includes('Owner:'), true)
-      assert.equal(result.toString().includes(`Type: counter`), true)
+      assert.equal(result.toString().includes(`Type: eventlog`), true)
+      CLI(`drop ${address} yes`)
     })
   })
 
@@ -108,16 +116,19 @@ describe('OrbitDB CLI - Common', function () {
     })
 
     it('drops a database', () => {
-      const result1 = CLI(`drop ${databaseAddress} yes`)
-      assert.equal(result1.toString().includes(`Dropped database '${databaseAddress}'`), true)
+      const result1 = CLI(`create ${dbname} eventlog`)
+      const address = result1.toString().replace('\n', '')
+
+      const result2 = CLI(`drop ${address} yes`)
+      assert.equal(result2.toString().includes(`Dropped database '${address}'`), true)
 
       let err
       try {
-        CLI(`info ${databaseAddress}`)
+        CLI(`info ${address}`)
       } catch (e) {
         err = e.toString()
       }
-      assert.equal(err.includes(`Database '${databaseAddress}' doesn't exist.`), true)
+      assert.equal(err.includes(`Database '${address}' doesn't exist!`), true)
     })
   })
 

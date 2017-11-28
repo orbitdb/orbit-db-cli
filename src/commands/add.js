@@ -40,7 +40,7 @@ exports.builder = (yargs) => {
 
 exports.handler = async (argv) => {
   // Get stdin pipe if there's one
-  const stdin = process.argv[4]
+  const stdin = !argv.interactive ? process.argv[4] : null
 
   // Require input data unless we're going to open the input prompt
   // or we have a stdin pipe
@@ -52,8 +52,16 @@ exports.handler = async (argv) => {
   const operation = async (db, argv) => {
     // Adds data to the database and outputs the operation hash
     const add = async (data) => {
-      const hash = await db.add(data)
-      process.stdout.write(`Added ${hash}\n`)
+      // try {
+        const hash = await db.add(data)
+        process.stdout.write(`Added ${hash}\n`)
+      // } catch (e) {
+      //   if (e.toString().includes('Not allowed to write')) {
+      //     throw new Error(`Not allowed to write to '${argv.database}'`)
+      //   } else {
+      //     throw e
+      //   }
+      // }
     }
 
     if (!stdin) {
@@ -64,5 +72,14 @@ exports.handler = async (argv) => {
       await pMapSeries(lines, add)
     }
   }
-  await runCommand(argv.database, supportedDatabaseTypes, argv, operation)
+
+  try {
+    await runCommand(argv.database, supportedDatabaseTypes, argv, operation)
+  } catch (e) {
+    if (e.toString().includes('Not allowed to write')) {
+      throw new Error(`Not allowed to write to '${argv.database}'`)
+    } else {
+      throw e
+    }
+  }
 }

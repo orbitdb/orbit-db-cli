@@ -6,6 +6,10 @@ const exitOnError = require('../exit-on-error')
 const search = require('../lib/docstore/search')
 const replicate = require('../lib/replication-loop')
 
+const Logger = require('logplease')
+Logger.setLogLevel('NONE') // turn off logs
+const logger = Logger.create('get', { color: Logger.Colors.Magenta })
+
 /* Export as Yargs command */
 exports.command = 'get <database> [<search>]'
 exports.aliases = ['query', 'search']
@@ -28,6 +32,10 @@ exports.builder = (yargs) => {
       describe: 'Display interactive search prompt\n(only for docstore databases)',
       default: false,
     })
+    .option('live', {
+      describe: 'Query the database by connecting to the network first',
+      default: false,
+    })
     .option('progress', {
       alias: 'p',
       describe: 'Display pretty progress bars',
@@ -47,10 +55,11 @@ exports.builder = (yargs) => {
 
 exports.handler = (argv) => {
   let db
-  const shouldReplicate = argv.replicate || argv.sync
+  const shouldReplicate = argv.replicate || argv.sync || argv.live
   const startTime = new Date().getTime()
+  argv = Object.assign({}, argv, { localOnly: !shouldReplicate })
   return openDatabase(argv.database, argv)
-    .then((result) => {
+    .then(async (result) => {
       db = result
       if (db.type === 'counter') {
         if (argv.output === 'json') {
@@ -60,17 +69,59 @@ exports.handler = (argv) => {
           process.stdout.write(`${db.value}\n`)
         }
       } else if (db.type === 'eventlog' || db.type === 'feed') {
-        const result = db.iterator({ limit: argv.limit || -1 }).collect().map(e => e)
-        if (result.length > 0) {
-          if (argv.output === 'json') {
-            process.stdout.write(result.map(e => JSON.stringify(e)).join('\n'))
-            process.stdout.write('\n')
+        const query = (displayHeader = false) => {
+          const result = db.iterator({ limit: argv.limit || -1 }).collect()
+          if (result.length > 0) {
+            const sendTime = result[result.length - 1].payload.value
+            const t = new Date(sendTime)
+            const endTime = (new Date().getTime()) - (t.getTime())
+            if (argv.output === 'json') {
+              process.stdout.write(result.map(e => JSON.stringify(e)).join('\n'))
+              process.stdout.write('\n')
+            } else {
+              if (displayHeader) process.stdout.write(`\n--- Last ${argv.limit || db._oplog.length} entries ---\n`)
+              process.stdout.write(result.map(e => JSON.stringify(e.payload.value, null, 2)).join('\n'))
+              process.stdout.write('\n')
+              if (argv.timing)
+                process.stdout.write(endTime + ' ms\n')
+            }
           } else {
-            process.stdout.write(result.map(e => JSON.stringify(e.payload.value, null, 2)).join('\n'))
-            process.stdout.write('\n')
+            process.stdout.write(`Database '${db.address.toString()}' is empty!\n`)
           }
+        }
+
+        if (shouldReplicate) {
+          let shuttingDown = false
+          const shutdown = async (delay = 0) => {
+            logger.debug('Received SIGINT')
+            if (!shuttingDown) {
+              shuttingDown = true
+
+              if (argv.interactive)
+                process.stdout.write('\n')
+
+              process.stdout.write('Shutting down...\n')
+
+              // Give time to finish pending queries when
+              // adding entries at an interval
+              await new Promise(resolve => setTimeout(resolve, delay))
+
+              process.stdout.write('Saving database... ')
+              await db.saveSnapshot()
+              process.stdout.write('Saved!\n')
+
+              process.exit(0)
+            }
+          }
+
+          // We're "online", give a little time to flush the queues
+          process.on('SIGINT', () => shutdown(1000))
+
+          query(true)
+          db.events.on('replicated', () => query(true))
+          await replicate(db, argv)
         } else {
-          process.stdout.write(`Database '${db.dbname}' is empty!\n`)
+          query()
         }
       } else if (db.type === 'keyvalue') {
         if (!argv.search)
@@ -96,10 +147,10 @@ exports.handler = (argv) => {
       }
     })
     .catch(exitOnError)
-    .then(() => {
-      if (shouldReplicate)
-        return replicate(db)
-    })
+    // .then(() => {
+    //   if (shouldReplicate)
+    //     return replicate(db)
+    // })
     .catch(exitOnError)
     .then(() => outputTimer(startTime, argv))
     .then(() => process.exit(0))

@@ -17,9 +17,9 @@ describe('OrbitDB CLI - Feed Database', function () {
   before(() => {
     // Make sure we don't have an existing database
     rmrf.sync('./orbitdb')
-    CLI(`create ${dbname} feed`)
     id = getId()
-    databaseAddress = OrbitDB.parseAddress(path.join('/', id, dbname))
+    const result = CLI(`create ${dbname} feed`)
+    databaseAddress = result.toString().replace('\n', '')
   })
 
   after(() => {

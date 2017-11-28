@@ -17,9 +17,9 @@ describe('OrbitDB CLI - Eventlog Database', function () {
   before(() => {
     // Make sure we don't have an existing database
     rmrf.sync('./orbitdb')
-    CLI(`create ${dbname} eventlog`)
     id = getId()
-    databaseAddress = OrbitDB.parseAddress(path.join('/', id, dbname))
+    const result = CLI(`create ${dbname} eventlog`)
+    databaseAddress = result.toString().replace('\n', '')
   })
 
   after(() => {

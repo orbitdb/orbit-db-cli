@@ -24,7 +24,7 @@ const importCsv = (db, filename, options) => {
 
   const onProgress = (entry) => {
     linesImported++
-    db.events.emit('progress.load', db.dbname, null, null, linesImported, lines.length)
+    db.events.emit('progress.load', db.address.toString(), null, null, linesImported, lines.length)
   }
 
   return db.batchPut(lines, onProgress)

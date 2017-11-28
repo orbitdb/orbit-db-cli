@@ -14,24 +14,29 @@ describe('OrbitDB CLI - Replication', function () {
   const dbname = '/testdb'
   const getId = () => CLISync(`id`).toString().replace('\n', '')
 
-  beforeEach(() => {
-    // Make sure we don't have an existing database
-    rmrf.sync('./orbitdb')
-    CLISync(`create ${dbname} eventlog`)
-    id = getId()
-    databaseAddress = OrbitDB.parseAddress(path.join('/', id, dbname))
-  })
-
-  after(() => {
-    rmrf.sync('./orbitdb')
-  })
-
   it('replicates a database', (done) => {
     const numEntries = 64
     let result
     let listening = true
 
+    const id2 = new Date().getTime() + 128
+    const inputText = 'hi!'
+
+    rmrf.sync('/tmp/orbit-tests-' + id2)
+
+    process.env = Object.assign({}, process.env, { 
+      IPFS_PATH: '/tmp/orbit-tests-' + id2,
+      ORBITDB_PATH: '/tmp/orbit-tests-' + id2 + '-orbitdb',
+    })
+
+    const address = CLISync(`create ${dbname} eventlog`)
+    databaseAddress = address.toString().replace('\n', '')
+
+    const producer = CLI(`add ${databaseAddress} ${inputText} --sync --replicate --interval 200`)
+
     const id1 = new Date().getTime() - 128
+
+    rmrf.sync('/tmp/orbit-tests-' + id1)
 
     process.env = Object.assign({}, process.env, { 
       IPFS_PATH: '/tmp/orbit-tests-' + id1,
@@ -47,7 +52,7 @@ describe('OrbitDB CLI - Replication', function () {
       try {
         const isLater = (res, acc) => acc.max && acc.max > res.max && acc.progress && acc.progress > res.progress
         const lines = data.toString().split('\n')
-        const d = lines.length > 0
+        let d = lines.length > 0
           ? lines.filter(e => e !== '' && e !== '\n').map(e => e.replace(' ', ''))
           : [data.toString()]
 
@@ -56,20 +61,29 @@ describe('OrbitDB CLI - Replication', function () {
 
         let entry
         try {
-          entry = JSON.parse(d)
+          if (Array.isArray(d)) {
+            d = d.map(e => JSON.parse(e.replace(' ', '')))
+            entry = d[d.length - 1]
+          } else {
+            entry = JSON.parse(d.replace(' ', ''))
+          }
         } catch (e) {
-          console.log(d)
+          console.log("error data:", JSON.stringify(d, null, 2))
+          console.log(e)
           done(e)
         }
 
-        // console.log("ee", entry)
-        entry = entry.length > 0 ? entry.reduce(isLater, { max: 0, progress: 0 }) : entry
+        if (entry) {
+          entry = entry.length > 0 
+            ? entry.map(e => JSON.parse(e)).reduce(isLater, { max: 0, progress: 0 }) 
+            : entry
 
-        if (entry.max >= numEntries && entry.progress >= numEntries) {
-          listening = false
-          result = entry
-          replicator.kill('SIGINT')
-          producer.kill('SIGINT')
+          if (entry.max >= numEntries && entry.progress >= numEntries) {
+            listening = false
+            result = entry
+            replicator.kill('SIGINT')
+            producer.kill('SIGINT')
+          }
         }
       } catch (e) {
         if (data.toString().indexOf('Swarm listening') > -1
@@ -89,15 +103,6 @@ describe('OrbitDB CLI - Replication', function () {
     })
 
     replicator.stderr.on('data', (data) => console.error("orbitdb-cli error:", data.toString()))
-
-    const id2 = new Date().getTime() + 128
-    const inputText = 'hi!'
-
-    process.env = Object.assign({}, process.env, { 
-      IPFS_PATH: '/tmp/orbit-tests-' + id2 ,
-      ORBITDB_PATH: '/tmp/orbit-tests-' + id2 + '-orbitdb',
-    })
-    const producer = CLI(`add ${databaseAddress} ${inputText} --sync --replicate --interval 200`)
 
     replicator.on('exit', (data) => {
       const interval = setInterval(() => {

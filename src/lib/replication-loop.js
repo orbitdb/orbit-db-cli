@@ -24,11 +24,11 @@ const replicate = (db, argv = {}) => {
   }
 
   const interval = setInterval(async () => {
-    const peers = await db._ipfs.pubsub.peers(db.dbname)
+    const peers = await db._ipfs.pubsub.peers(db.address.toString())
     if (argv.progress && peers.length != peerCount && !jsonOutput) {
       if (dashboardMode) clearScreen()
       latestHave = Object.assign({}, latestHave, db._replicationInfo.have)
-      outputProgress('Replicating', db.dbname, db._oplog.length, db._replicationInfo.max, startTime)
+      outputProgress('Replicating', db.address.toString(), db._oplog.length, db._replicationInfo.max, startTime)
       if (dashboardMode) {
         outputReplicationInfo(db, null, db._replicationInfo.max, startTime, latestHave, true, peers.length, bytesDownloaded)
       }
@@ -83,15 +83,15 @@ const replicate = (db, argv = {}) => {
     if (argv.progress) {
       if (dashboardMode) {
         clearScreen()
-        outputProgress('Replicating', db.path, db._oplog.length, db._replicationInfo.max, new Date().getTime())
+        outputProgress('Replicating', db.address.toString(), db._replicationInfo.progress, db._replicationInfo.max, new Date().getTime())
         outputReplicationInfo(db, null, db._replicationInfo.max, null, db._replicationInfo.have)
       } else {
-        outputProgress('Replicating', db.path, db._replicationInfo.max, db._replicationInfo.max, new Date().getTime())
+        outputProgress('Replicating', db.address.toString(), db._replicationInfo.progress, db._replicationInfo.max, new Date().getTime())
       }
     } else if (jsonOutput) {
       // Output nothing
     } else {
-      process.stdout.write(`Replicating '${db.path}'`)
+      process.stdout.write(`Replicating '${db.address.toString()}'`)
     }
   })
 }

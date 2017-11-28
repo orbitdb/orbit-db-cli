@@ -24,7 +24,7 @@ exports.handler = async (argv) => {
   const startTime = new Date().getTime()
   try {
     const db = await createDatabase(argv.database, argv.type, argv)
-    process.stdout.write(`${db.dbname}\n`)
+    process.stdout.write(`${db.address.toString()}\n`)
   } catch (e) {
     console.error('Error:', e.message)
 

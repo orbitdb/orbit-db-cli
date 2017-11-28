@@ -24,14 +24,16 @@ exports.builder = (yargs) => {
 
 exports.handler = (argv) => {
   const startTime = new Date().getTime()
+  argv = Object.assign({}, argv, { create: false, localOnly: true })
   return openDatabase(argv.database, argv)
     .then((db) => {
-      process.stdout.write(db.path + '\n')
+      process.stdout.write(db.address.toString() + '\n')
       process.stdout.write(`> Type: ${db.type}\n`)
       process.stdout.write(`> Owner: ${db.id}\n`)
       process.stdout.write(`> Data file: ./${path.join('./', db._cache.path, db._cache.filename)}\n`)
       process.stdout.write(`> Entries: ${db.type === 'counter' ? 1 : Object.keys(db._index._index).length}\n`)
-      process.stdout.write(`> Oplog length: ${db._oplog.length}\n`)
+      process.stdout.write(`> Oplog length: ${db._oplog.length} / ${db._replicationInfo.max}\n`)
+      process.stdout.write(`> Write-access: \n> ${db.access.write.join('\n> ')}\n`)
     })
     .catch(exitOnError)
     .then(() => outputTimer(startTime, argv))
