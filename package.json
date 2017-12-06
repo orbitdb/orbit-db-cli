@@ -1,6 +1,6 @@
 {
   "name": "orbit-db-cli",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "description": "CLI for OrbitDB - A distributed p2p database on IPFS",
   "author": "Haad",
   "license": "MIT",
