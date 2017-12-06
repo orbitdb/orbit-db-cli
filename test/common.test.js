@@ -33,8 +33,7 @@ describe('OrbitDB CLI - Common', function () {
     let err
     try {
       CLI(`drop ${databaseAddress} yes`)
-      const oo = CLI(`info ${databaseAddress}`)
-      console.log("...", oo.toString())
+      CLI(`info ${databaseAddress}`)
     } catch (e) {
       err = e.toString().split('\n')[1]
     }
