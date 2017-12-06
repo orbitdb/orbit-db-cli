@@ -1,5 +1,8 @@
 'use strict'
 
+const rmrf = require('rimraf')
+const path = require('path')
+
 const Logger = require('logplease')
 Logger.setLogLevel('NONE') // turn off logs
 const logger = Logger.create('orbitdb-cli-drop', { color: Logger.Colors.Orange })
@@ -29,7 +32,10 @@ exports.handler = async (argv) => {
   try {
     logger.debug(`Drop database ${argv.database}`)
     const db = await openDatabase(argv.database, argv)
+    const dbCachePath = path.join('./', db._cache.path + '/' + db.address.toString().replace('/orbitdb/', '') + ".orbitdb")
     await db.drop()
+    await db.close()
+    rmrf.sync(dbCachePath)
   } catch (e) {
     exitOnError(e)
   }
