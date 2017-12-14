@@ -33,7 +33,7 @@ const outputReplicationInfo = (db, entry, maxClock, startTime, _have, temp = tru
 
   process.stdout.write('\n')
   process.stdout.write(`${final}`)
-  process.stdout.write(`Peers: ${peerCount} | Tasks running: ${db._loader._tasksRunning} | Queued: ${db._loader._queue.length} | Replicated: ${getHumanReadableBytes(bytesDownloaded)}\n`)
+  process.stdout.write(`Peers: ${peerCount} | Running: ${db._loader.tasksRunning} | Queued: ${db._loader.tasksQueued} | Replicated: ${getHumanReadableBytes(bytesDownloaded)}\n`)
 }
 
 module.exports = outputReplicationInfo
