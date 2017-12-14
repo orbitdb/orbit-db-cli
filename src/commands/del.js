@@ -26,12 +26,15 @@ exports.builder = (yargs) => {
 
 exports.handler = (argv) => {
   const startTime = new Date().getTime()
+  const key = argv.key
+  delete argv.key
+
   return openDatabase(argv.database, argv)
     .then((db) => {
       if (db.type !== 'docstore' && db.type !== 'feed' && db.type !== 'keyvalue')
         throw new Error(`Database type '${db.type}' doesn't support removing entries.`)
 
-      return del(db, argv.key)
+      return del(db, key)
         .then(() => db.saveSnapshot())
     })
     .catch(exitOnError)

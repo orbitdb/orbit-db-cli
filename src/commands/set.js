@@ -26,10 +26,13 @@ exports.builder = (yargs) => {
 
 exports.handler = (argv) => {
   const startTime = new Date().getTime()
+  const key = argv.key
+  delete argv.key
+
   return openDatabase(argv.database, argv, 'keyvalue')
     .then((db) => validateDatabaseType(db, 'keyvalue'))
     .then((db) => {
-      return set(db, argv.key, argv.value)
+      return set(db, key, argv.value)
         .then(() => db.saveSnapshot())
     })
     .catch(exitOnError)
