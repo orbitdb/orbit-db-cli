@@ -16,9 +16,9 @@
     "node": ">=8.0.0"
   },
   "dependencies": {
-    "ipfs": "~0.27.1",
+    "ipfs": "~0.27.7",
     "logplease": "~1.2.14",
-    "orbit-db": "github:orbitdb/orbit-db#fix/replication",
+    "orbit-db": "~0.19.3",
     "p-map-series": "~1.0.0",
     "p-whilst": "~1.0.0",
     "pipe-args": "^1.3.0",

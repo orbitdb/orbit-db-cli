@@ -52,16 +52,8 @@ exports.handler = async (argv) => {
   const operation = async (db, argv) => {
     // Adds data to the database and outputs the operation hash
     const add = async (data) => {
-      // try {
-        const hash = await db.add(data)
-        process.stdout.write(`Added ${hash}\n`)
-      // } catch (e) {
-      //   if (e.toString().includes('Not allowed to write')) {
-      //     throw new Error(`Not allowed to write to '${argv.database}'`)
-      //   } else {
-      //     throw e
-      //   }
-      // }
+      const hash = await db.add(data)
+      process.stdout.write(`Added ${hash}\n`)
     }
 
     if (!stdin) {
