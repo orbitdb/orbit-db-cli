@@ -46,7 +46,8 @@ const openDatabase = async (database, argv, openAsType) => {
   }
 
   try {
-    await db.loadFromSnapshot()
+    // await db.loadFromSnapshot()
+    await db.load()
   } catch (e) {
     if (e.toString() === `Snapshot for ${database} not found!`) {
       throw new Error(`Database '${database}' doesn't exist.`)
@@ -57,7 +58,7 @@ const openDatabase = async (database, argv, openAsType) => {
     process.stdout.write('\n')
 
   if (db)
-    logger.debug(`Database '${db.address.toString()}' loaded (type: ${db.type}, entries: ${db._index._index ? Object.keys(db._index._index).length : 0})`)
+    logger.debug(`Database '${db.address.toString()}' loaded (type: ${db.type}, oplog: ${db._oplog.length})`)
 
   return db
 }
