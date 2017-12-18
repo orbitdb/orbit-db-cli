@@ -19,14 +19,6 @@ const replicate = (db, argv = {}) => {
     process.stdout.write('\x1B[2J\x1B[0f')
   }
 
-  const interval = setInterval(async () => {
-    const peers = await db._ipfs.pubsub.peers(db.address.toString()) || []
-    if (argv.progress && peers.length != peerCount && !jsonOutput) {
-      outputProgress('Replicating', db.address.toString(), db._replicationInfo.progress, db._replicationInfo.max, startTime)
-    }
-    peerCount = peers.length
-  }, 2000)
-
   return new Promise((resolve, reject) => {
     if (argv.progress || jsonOutput) {
       const outputJson = (id, json = false) => {
