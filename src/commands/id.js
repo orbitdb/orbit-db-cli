@@ -15,9 +15,18 @@ exports.builder = (yargs) => {
 
 exports.handler = async (argv) => {
   const startTime = new Date().getTime()
-  const ipfsConfig = Object.assign({}, config.ipfsConfig)
+  let ipfsConfig = Object.assign({}, config.ipfsConfig)
+
+  if (argv.address) {
+    ipfsConfig.start = true
+  }
+
   const ipfs = await startIpfs(ipfsConfig)
   const peerId = await ipfs.config.get('Identity.PeerID')
   process.stdout.write(`${peerId}\n`)
+
+  if (argv.address) {
+    process.stdout.write(`${ipfs._peerInfo.multiaddrs._multiaddrs[0].toString()}\n`)
+  }
   process.exit(0)
 }
