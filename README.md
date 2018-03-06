@@ -27,13 +27,15 @@ Deleted QmSwYZheHVa3eWf83XwnWNJtjGG7EWjiWTaTKLeFozVRnz
 $ orbitdb get /orbitdb/QmfSUsdr34iGio68eMezDzZLCKZTnbsxNJgiNipimZtpi1/hello
 Database '/orbitdb/QmfSUsdr34iGio68eMezDzZLCKZTnbsxNJgiNipimZtpi1/hello' is empty!
 
-$ orbitdb info hello
+$ orbitdb info /orbitdb/QmfSUsdr34iGio68eMezDzZLCKZTnbsxNJgiNipimZtpi1/hello
 /orbitdb/QmfSUsdr34iGio68eMezDzZLCKZTnbsxNJgiNipimZtpi1/hello
 > Type: feed
 > Owner: QmfSUsdr34iGio68eMezDzZLCKZTnbsxNJgiNipimZtpi1
 > Data file: ./orbitdb/QmfSUsdr34iGio68eMezDzZLCKZTnbsxNJgiNipimZtpi1/hello.orbitdb
 > Entries: 0
-> Oplog length: 2
+> Oplog length: 2 / 2
+> Write-access:
+> 04986b1db63cdbe0798699da5054477cfda4ec32dc62563b0c77a94ec8ed8e1946c1cfad0e8c2a681ded54f66dc1614cb0dcfac5b04f1fab3d09ca368f0ff0097f
 ```
 
 ## Requirements
@@ -188,7 +190,7 @@ In a second terminal, run:
 
 ```
 mkdir tmp/ && cd tmp/
-orbitdb replicate <address> --progress --dashboard
+orbitdb replicate <address> --progress
 ```
 
 *Eg. `orbitdb replicate /orbitdb/QmQxfgdjo3EQZiqBgt4uDiJNoLNedRNCZTHCquohxScsXc/a --progress --dashboard`*
@@ -197,9 +199,6 @@ Output:
 ```
 Replicating '/orbitdb/QmQxfgdjo3EQZiqBgt4uDiJNoLNedRNCZTHCquohxScsXc/a'
 ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 0/0 |   0.0% | 00:00:00
-┌─────────────────────────────────────────────────────────────────────┐
-└─────────────────────────────────────────────────────────────────────┘
-Tasks running: 0 | Queued: 0
 ```
 
 In the first terminal, run:
@@ -212,18 +211,10 @@ Observe the database replicating to the second instance.
 Output:
 ```
 Replicating ██████████████████████████░░░░░░░░░░░░░░ 2/3 |  66.7% | 00:00:21
-┌───────────────────────────────────────────────────────────────────────────┐
-│OO.                                                                        │
-└───────────────────────────────────────────────────────────────────────────┘
-Tasks running: 1 | Queued: 1
 ```
 
 ```
 Replicating ████████████████████████████████████████ 77/77 |  100.0% | 00:02:31
-┌─────────────────────────────────────────────────────────────────────────────┐
-│OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO│
-└─────────────────────────────────────────────────────────────────────────────┘
-Tasks running: 0 | Queued: 0
 ```
 
 

@@ -25,6 +25,11 @@ const runCommand = async (database, validTypes, argv, operation, onError) => {
     const db = await openDatabase(database, argv)
     validateDatabaseType(db, validTypes)
 
+    // If we were "online", give a little time to flush the queues
+    if (argv.interactive || argv.interval || argv.replicate || argv.sync) {
+      process.on('SIGINT', () => shutdown(1000))
+    }
+
     // If 'synchronous' flag is on, wait first for peers
     // to connect
     if (argv.sync)
@@ -46,16 +51,11 @@ const runCommand = async (database, validTypes, argv, operation, onError) => {
         await new Promise(resolve => setTimeout(resolve, delay))
 
         process.stdout.write('Saving database... ')
-        await db.saveSnapshot()
+        // await db.saveSnapshot()
         process.stdout.write('Saved!\n')
 
         process.exit(0)
       }
-    }
-
-    // If we were "online", give a little time to flush the queues
-    if (argv.interactive || argv.interval || argv.replicate || argv.sync) {
-      process.on('SIGINT', () => shutdown(1000))
     }
 
     // Run the actual database command and track its duration
