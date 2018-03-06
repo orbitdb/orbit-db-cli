@@ -24,6 +24,12 @@ const openDatabase = async (database, argv, openAsType) => {
   const peerId = await ipfs.config.get('Identity.PeerID')
   logger.debug("PeerID:", peerId)
 
+  // Try connecting immediately to peer ID given as 'from' argument
+  if (argv.from) {
+    console.log(">>", argv.from)
+    ipfs.swarm.connect(argv.from)
+  }
+
   const directory = process.env.ORBITDB_PATH || config.defaultDatabaseDir
   const orbitdb = new OrbitDB(ipfs, directory, { peerId: peerId })
 

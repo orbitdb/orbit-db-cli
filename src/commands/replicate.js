@@ -23,6 +23,10 @@ exports.builder = (yargs) => {
       describe: 'Display replication status on a dashboard',
       default: false,
     })
+    .option('from', {
+      describe: 'From PeerID',
+      default: false,
+    })
 }
 
 exports.handler = async (argv) => {
