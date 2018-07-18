@@ -156,7 +156,7 @@ Output:
 Added document 'FRANK!'
 
 > node "src/bin.js" get /orbitdb/QmcE2HMrDTL3SFV1rcB5GaJVSJFfpFsnfTM4qK8SRScjyj/demo "FRANK!" --progress
-Loading '/orbitdb/QmcE2HMrDTL3SFV1rcB5GaJVSJFfpFsnfTM4qK8SRScjyj/demo' 
+Loading '/orbitdb/QmcE2HMrDTL3SFV1rcB5GaJVSJFfpFsnfTM4qK8SRScjyj/demo'
 ██████████████████████████████████████████ 1/1 | 100.0% | 00:00:00
 Searching for 'FRANK!' from '/orbitdb/QmcE2HMrDTL3SFV1rcB5GaJVSJFfpFsnfTM4qK8SRScjyj/demo'
 ┌────────────────────────────────────────────────────────────────┬───┐
@@ -173,6 +173,8 @@ Demo finished!
 ```
 
 ## Replicate
+
+### For `eventlog` or `feed` type databases
 
 Demo:
 
@@ -216,7 +218,29 @@ Replicating ██████████████████████�
 ```
 Replicating ████████████████████████████████████████ 77/77 |  100.0% | 00:02:31
 ```
+### For `docstore` type databases
 
+First, create a database and add an item to it:
+
+```
+$ node src/bin.js create /orbitdb/mydocstore docstore                         ~
+/orbitdb/QmapaF6FmS3JgTQBKSpSZUdqgf2t8VUUvXcUCdPd5MaeQB/orbitdb/mydocstore
+$ node src/bin.js put /orbitdb/QmapaF6FmS3JgTQBKSpSZUdqgf2t8VUUvXcUCdPd5MaeQB/orbitdb/mydocstore '{"name": "foo", "_id": 1}' --indexBy name
+Added document 'foo'
+```
+
+You may now syncrhonise it with another. To do that, run `replicate` on the current directory as well as in the directory you want to synchronise with. Both should result in the same output:
+
+```
+$ node src/bin.js replicate /orbitdb/QmapaF6FmS3JgTQBKSpSZUdqgf2t8VUUvXcUCdPd5MaeQB/orbitdb/mydocstore --progress
+Swarm listening on /ip4/127.0.0.1/tcp/38795/ipfs/QmRvDCjRzBB9PjkcCRJQFBDS8V8hsfivpQGFUh85ERxQeM
+Swarm listening on /ip4/1.2.3.4/tcp/38795/ipfs/QmRvDCjRzBB9PjkcCRJQFBDS8V8hsfivpQGFUh85ERxQeM
+Loading '/orbitdb/QmapaF6FmS3JgTQBKSpSZUdqgf2t8VUUvXcUCdPd5MaeQB/orbitdb/mydocstore' (docstore)
+Loading '/orbitdb/QmapaF6FmS3JgTQBKSpSZUdqgf2t8VUUvXcUCdPd5MaeQB/orbitdb/mydocstore' ░░░ 0/1 |   0.0% | 00:00:00
+████████████████████████████████████████████████████████████████████████████████████████ 1/1 | 100.0% | 00:00:00
+Replicating '/orbitdb/QmapaF6FmS3JgTQBKSpSZUdqgf2t8VUUvXcUCdPd5MaeQB/orbitdb/mydocstore'
+████████████████████████████████████████████████████████████████████████████████████████ 1/1 | 100.0% | 00:00:00
+```
 
 ## Dev
 
