@@ -32,7 +32,7 @@ exports.handler = (argv) => {
       process.stdout.write(`> Owner: ${db.id}\n`)
       process.stdout.write(`> Data file: ./${db._cache.path}\n`)
       process.stdout.write(`> Entries: ${db.type === 'counter' ? 1 : db._oplog.length}\n`)
-      process.stdout.write(`> Oplog length: ${db._oplog.length} / ${db._replicationInfo.max}\n`)
+      process.stdout.write(`> Oplog length: ${db._oplog.length} / ${db.replicationStatus.max}\n`)
       process.stdout.write(`> Write-access: \n> ${db.access.write.join('\n> ')}\n`)
     })
     .catch(exitOnError)

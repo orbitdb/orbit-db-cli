@@ -22,7 +22,7 @@ const replicate = (db, argv = {}) => {
   return new Promise((resolve, reject) => {
     if (argv.progress || jsonOutput) {
       const outputJson = (id, json = false) => {
-        process.stdout.write(JSON.stringify({ id : id, progress: db._replicationInfo.progress, max: db._replicationInfo.max }))
+        process.stdout.write(JSON.stringify({ id : id, progress: db.replicationStatus.progress, max: db.replicationStatus.max }))
         process.stdout.write('\n')
       }
 
@@ -32,12 +32,12 @@ const replicate = (db, argv = {}) => {
           return
         }
 
-        outputProgress('Replicating', id, db._replicationInfo.progress, db._replicationInfo.max, startTime)
+        outputProgress('Replicating', id, db.replicationStatus.progress, db.replicationStatus.max, startTime)
       }
 
       db.events.on('replicate', (id) => {
-        if (db._replicationInfo.max > latestProgress) {
-          latestProgress = db._replicationInfo.max
+        if (db.replicationStatus.max > latestProgress) {
+          latestProgress = db.replicationStatus.max
           output(id)
         }
       })
@@ -52,7 +52,7 @@ const replicate = (db, argv = {}) => {
     })
 
     if (argv.progress) {
-      outputProgress('Replicating', db.address.toString(), db._replicationInfo.progress, db._replicationInfo.max, new Date().getTime())
+      outputProgress('Replicating', db.address.toString(), db.replicationStatus.progress, db.replicationStatus.max, new Date().getTime())
     } else if (jsonOutput) {
       // Output nothing
     } else {
