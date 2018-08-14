@@ -252,4 +252,4 @@ node src/bin.js import 2017.csv /t9 src/schemas/csv-schema1.js --progress --limi
 
 ## License
 
-[MIT](LICENSE) ©️ 2017 Haadcode
+[MIT](LICENSE) ©️ 2017-2018 Haja Networks Oy
