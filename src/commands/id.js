@@ -21,7 +21,7 @@ exports.handler = async (argv) => {
     ipfsConfig.start = true
   }
 
-  const ipfs = await startIpfs(ipfsConfig)
+  const ipfs = await startIpfs(ipfsConfig, argv)
   const peerId = await ipfs.config.get('Identity.PeerID')
   process.stdout.write(`${peerId}\n`)
 

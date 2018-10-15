@@ -12,4 +12,8 @@ argv
   .demand(1)
   .help('help')
   .alias('h', 'help')
+  .option('ipfs-api-endpoint', {
+    alias: 'ipfs',
+    describe: 'IPFS API endpoint to use instead of bringing up one.'
+  })
   .argv
