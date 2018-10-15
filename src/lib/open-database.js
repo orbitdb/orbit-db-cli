@@ -19,7 +19,7 @@ const openDatabase = async (database, argv, openAsType) => {
   logger.debug(`Going online: ${ipfsConfig.start}`)
   if (ipfsConfig.start) logger.info(`IPFS going online!`)
 
-  const ipfs = await startIpfs(ipfsConfig)
+  const ipfs = await startIpfs(ipfsConfig, argv)
 
   const peerId = await ipfs.config.get('Identity.PeerID')
   logger.debug("PeerID:", peerId)

@@ -19,7 +19,7 @@ exports.builder = (yargs) => {
 
 exports.handler = async (argv) => {
   const ipfsConfig = Object.assign({}, config.ipfsConfig)
-  const ipfs = await startIpfs(ipfsConfig)
+  const ipfs = await startIpfs(ipfsConfig, argv)
   const directory = process.env.ORBITDB_PATH || config.defaultDatabaseDir
   const orbitdb = new OrbitDB(ipfs, directory)
   process.stdout.write(`${orbitdb.key.getPublic('hex')}\n`)

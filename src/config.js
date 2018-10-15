@@ -8,7 +8,7 @@ const conf = {
   repo: process.env.IPFS_PATH || path.join(defaultOrbitDbDir, '/ipfs'),
   start: false,
   EXPERIMENTAL: {
-    pubsub: true,
+    pubsub: true
   },
   config: {
     Addresses: {

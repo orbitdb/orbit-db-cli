@@ -7,7 +7,7 @@ const OrbitDB = require('orbit-db')
 
 const createDatabase = async (database, type, argv) => {
   // TODO: add database path config: { repo: path.join('./.orbitdb') }
-  const ipfs = await startIpfs(config.ipfsConfig)
+  const ipfs = await startIpfs(config.ipfsConfig, argv)
   const peerId = await ipfs.config.get('Identity.PeerID')
   // We need to pass the IPFS ID since we're not starting IPFS
   const directory = process.env.ORBITDB_PATH || config.defaultDatabaseDir
