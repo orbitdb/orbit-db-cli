@@ -44,7 +44,7 @@ $ orbitdb info /orbitdb/QmfSUsdr34iGio68eMezDzZLCKZTnbsxNJgiNipimZtpi1/hello
 * npm
 
 ## Install
-From Npm:
+From npm:
 
 ```
 npm install -g orbit-db-cli
