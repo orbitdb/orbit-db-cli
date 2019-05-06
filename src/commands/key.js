@@ -21,7 +21,7 @@ exports.handler = async (argv) => {
   const ipfsConfig = Object.assign({}, config.ipfsConfig)
   const ipfs = await startIpfs(ipfsConfig)
   const directory = process.env.ORBITDB_PATH || config.defaultDatabaseDir
-  const orbitdb = new OrbitDB(ipfs, directory)
+  const orbitdb = await OrbitDB.createInstance(ipfs, { directory: directory })
   process.stdout.write(`${orbitdb.key.getPublic('hex')}\n`)
   process.exit(0)
 }
