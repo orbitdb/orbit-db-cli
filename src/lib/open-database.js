@@ -31,7 +31,9 @@ const openDatabase = async (database, argv, openAsType) => {
   }
 
   const directory = process.env.ORBITDB_PATH || config.defaultDatabaseDir
-  const orbitdb = new OrbitDB(ipfs, directory, { peerId: peerId })
+  const orbitdb = await OrbitDB.createInstance(ipfs, {
+      directory: directory,
+      peerId: peerId })
 
   logger.debug(`Loading database '${database}'`)
 

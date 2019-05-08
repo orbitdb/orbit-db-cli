@@ -3,12 +3,13 @@
   "version": "0.0.16",
   "description": "CLI for OrbitDB",
   "author": "Haad",
-  "contributors":[
+  "contributors": [
     "haadcode",
     "prabodhmeshram",
     "RichardLitt",
     "dset0x",
-    "adam-palazzo"
+    "adam-palazzo",
+    "haydenyoung"
   ],
   "license": "MIT",
   "repository": {
@@ -16,7 +17,7 @@
     "url": "https://github.com/orbitdb/orbit-db-cli"
   },
   "bugs": "https://github.com/orbitdb/orbit-db-cli/issues",
-  "homepage":"https://github.com/orbitdb/orbit-db-cli",
+  "homepage": "https://github.com/orbitdb/orbit-db-cli",
   "bin": {
     "orbitdb": "./src/bin.js"
   },
@@ -35,9 +36,9 @@
     "node": ">=8.0.0"
   },
   "dependencies": {
-    "ipfs": "~0.30.1",
+    "ipfs": "~0.34.4",
     "logplease": "~1.2.14",
-    "orbit-db": "orbitdb/orbit-db",
+    "orbit-db": "0.20.0",
     "p-map-series": "~1.0.0",
     "p-whilst": "~1.0.0",
     "pipe-args": "^1.3.0",
