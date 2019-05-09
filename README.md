@@ -56,7 +56,7 @@ $ orbitdb info /orbitdb/QmfSUsdr34iGio68eMezDzZLCKZTnbsxNJgiNipimZtpi1/hello
 
 ## Requirements
 
-* [Node.js](https://nodejs.org) >= [**v8.0.0**](https://nodejs.org/en/download/current/)
+* [Node.js](https://nodejs.org) >= [**v10.0.0**](https://nodejs.org/en/download/current/)
 * npm
 
 ## Install
