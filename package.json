@@ -36,6 +36,7 @@
     "node": ">=10.0.0"
   },
   "dependencies": {
+    "cids": "^0.7.1",
     "ipfs": "~0.36.4",
     "logplease": "~1.2.14",
     "orbit-db": "^0.21.0",
@@ -47,6 +48,7 @@
   },
   "devDependencies": {
     "mocha": "~4.0.1",
+    "multibase": "^0.6.0",
     "multihashes": "~0.4.5",
     "rimraf": "~2.6.1"
   },

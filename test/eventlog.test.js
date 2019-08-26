@@ -4,6 +4,8 @@ const path = require('path')
 const rmrf = require('rimraf')
 const assert = require('assert')
 const multihash = require('multihashes')
+const CID = require('cids')
+const multibase = require('multibase')
 const OrbitDB = require('orbit-db')
 const CLI = require('./cli')
 
@@ -29,8 +31,10 @@ describe('OrbitDB CLI - Eventlog Database', function () {
 
   it('adds an event', () => {
     const result = CLI(`add ${databaseAddress} "hello 1"`)
-    const mh = multihash.fromB58String(result.toString().replace('\n', '').replace('Added ', ''))
-    assert.equal(multihash.validate(mh), undefined)
+    const cidHash = result.toString().replace('\n', '').replace('Added ', '')
+    const cid = new CID(cidHash)
+    assert.strictEqual(multibase.isEncoded(cidHash), 'base58btc')
+    assert.strictEqual(CID.isCID(cid), true)
   })
 
   it('returns events', () => {

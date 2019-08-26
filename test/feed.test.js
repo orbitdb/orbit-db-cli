@@ -5,6 +5,8 @@ const rmrf = require('rimraf')
 const assert = require('assert')
 const multihash = require('multihashes')
 const OrbitDB = require('orbit-db')
+const CID = require('cids')
+const multibase = require('multibase')
 const CLI = require('./cli')
 
 describe('OrbitDB CLI - Feed Database', function () {
@@ -29,8 +31,9 @@ describe('OrbitDB CLI - Feed Database', function () {
 
   it('adds an event', () => {
     const result = CLI(`add ${databaseAddress} "hello 1"`)
-    const mh = multihash.fromB58String(result.toString().replace('\n', '').replace('Added ', ''))
-    assert.equal(multihash.validate(mh), undefined)
+    const cidHash = result.toString().replace('\n', '').replace('Added ', '')
+    assert.strictEqual(CID.isCID(new CID(cidHash)), true)
+    assert.strictEqual(multibase.isEncoded(cidHash), 'base58btc')
   })
 
   it('returns events', () => {
