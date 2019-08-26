@@ -11,4 +11,6 @@ clean:
 	rm -rf orbitdb/
 	rm package-lock.json
 
+rebuild: clean all
+
 .PHONY: test build

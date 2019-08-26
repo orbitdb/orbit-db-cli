@@ -20,12 +20,12 @@ const conf = {
       ],
     },
   },
-  Discovery: {
-    MDNS: {
-      Enabled: true,
-      Interval: 1,
-    },
-  },
+  // Discovery: {
+  //   MDNS: {
+  //     Enabled: true,
+  //     Interval: 1,
+  //   },
+  // },
 }
 
 module.exports = {
