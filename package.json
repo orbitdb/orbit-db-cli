@@ -52,5 +52,10 @@
   },
   "scripts": {
     "test": "IPFS_PATH=/tmp/orbit-db-cli-tests mocha"
-  }
+  },
+  "localMaintainers": [
+    "haad <haad@haja.io>",
+    "shamb0t <shams@haja.io>",
+    "hajamark <mark@haja.io>"
+  ]
 }
