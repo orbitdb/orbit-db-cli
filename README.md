@@ -1,6 +1,6 @@
 # orbitdb - CLI for orbit-db
 
-[![Gitter](https://img.shields.io/gitter/room/nwjs/nw.js.svg)](https://gitter.im/orbitdb/Lobby) [![Matrix](https://img.shields.io/badge/matrix-%23orbitdb%3Apermaweb.io-blue.svg)](https://riot.permaweb.io/#/room/#orbitdb:permaweb.io) [![Discord](https://img.shields.io/discord/475789330380488707?color=blueviolet&label=discord)](https://discord.gg/cscuf5T)
+[![Gitter](https://img.shields.io/gitter/room/nwjs/nw.js.svg)](https://gitter.im/orbitdb/Lobby) [![Matrix](https://img.shields.io/badge/matrix-%23orbitdb%3Apermaweb.io-blue.svg)](https://riot.permaweb.io/#/room/#orbitdb:permaweb.io) 
 [![CircleCI](https://circleci.com/gh/orbitdb/orbit-db-cli.svg?style=shield)](https://circleci.com/gh/orbitdb/orbit-db-cli)
 [![npm version](https://badge.fury.io/js/orbit-db-cli.svg)](https://www.npmjs.com/package/orbit-db-cli)
 [![node](https://img.shields.io/node/v/orbit-db-cli.svg)](https://www.npmjs.com/package/orbit-db-cli)
