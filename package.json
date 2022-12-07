@@ -36,7 +36,7 @@
     "node": ">=10.0.0"
   },
   "dependencies": {
-    "ipfs": "~0.34.4",
+    "ipfs": "~0.65.0",
     "logplease": "~1.2.14",
     "orbit-db": "0.20.0",
     "p-map-series": "~1.0.0",
