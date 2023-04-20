@@ -1,17 +1,17 @@
-# Contributing to [PROJECT'S NAME]
+# Contributing to orbit-db-cli
 
 ## Create an issue
 
-- If you've encountered a bug, open a [Bug Report](https://github.com/PoCInnovation/$REPOSITORY/issues/new?assignees=&labels=&template=bug_report.md&title=).
-- If you want [PROJECT'S NAME] to have a new functionality, open a [Feature Request](https://github.com/PoCInnovation/$REPOSITORY/issues/new?assignees=&labels=&template=feature_request.md&title=).
+- If you've encountered a bug, open a [Bug Report](https://github.com/PoCInnovation/orbit-db-cli/issues/new?assignees=&labels=&template=bug_report.md&title=).
+- If you want orbit-db-cli to have a new functionality, open a [Feature Request](https://github.com/PoCInnovation/orbit-db-cli/issues/new?assignees=&labels=&template=feature_request.md&title=).
 
 ## Resolve an issue
 
-Select an [issue](https://github.com/PoCInnovation/$REPOSITORY/issues) that you want to resolve.
+Select an [issue](https://github.com/PoCInnovation/orbit-db-cli/issues) that you want to resolve.
 
 The recommended workflow is to fork this repository and open pull requests from your fork.
 
-### 1. Fork, clone & configure [PROJECT'S NAME] upstream
+### 1. Fork, clone & configure orbit-db-cli upstream
 
 - Click on the _Fork_ button on GitHub
 - Clone the original repository
@@ -19,10 +19,10 @@ The recommended workflow is to fork this repository and open pull requests from 
 
 ```sh
 # Clone original repository
-git clone git@github.com:PoCInnovation/$REPOSITORY.git
+git clone git@github.com:PoCInnovation/orbit-db-cli.git
 
-# Add your fork as a remove
-git remote add <fork_name> https://github.com/$YOUR_GITHUB_USER/$REPOSITORY.git
+# Add your fork as a remote
+git remote add <fork_name> https://github.com/$YOUR_GITHUB_USER/orbit-db-cli.git
 ```
 
 ### 2. Create a pull request
@@ -40,7 +40,7 @@ git commit -s
 # Push your new branch
 git push <fork name>
 
-# Create a new pull request from https://github.com/PoCInnovation/$REPOSITORY/pulls
+# Create a new pull request from https://github.com/PoCInnovation/orbit-db-cli/pulls
 ```
 
 ### 3. Update your pull request with latest changes
