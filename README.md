@@ -1,12 +1,18 @@
 > If you see this section, you've just created a repository using [PoC Innovation's Open-Source project template](https://github.com/PoCInnovation/open-source-project-template). Check the [getting started guide](./.github/getting-started.md).
 
-# [PROJECT'S NAME]
+<h1 align="center">
+    OrbitDB - CLI
+</h1>
 
-[Project's description]
+<p align="center">
+  <img src="images/orbit_db_logo_color.png" width="256" />
+</p>
+
+The OrbitDB command line interface to manage orbit-db databases from a terminal.
 
 ## How does it work?
 
-[Explain how this project is working]
+--
 
 ## Getting Started
 
