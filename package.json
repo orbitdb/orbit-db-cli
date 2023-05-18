@@ -1,0 +1,19 @@
+{
+  "name": "orbit-db-cli",
+  "version": "1.0.0",
+  "description": "> If you see this section, you've just created a repository using [PoC Innovation's Open-Source project template](https://github.com/PoCInnovation/open-source-project-template). Check the [getting started guide](./.github/getting-started.md).",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PoCInnovation/orbit-db-cli.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/PoCInnovation/orbit-db-cli/issues"
+  },
+  "homepage": "https://github.com/PoCInnovation/orbit-db-cli#readme"
+}
