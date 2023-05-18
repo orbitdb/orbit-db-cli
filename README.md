@@ -5,7 +5,7 @@
 </h1>
 
 <p align="center">
-  <img src="images/orbit_db_logo_color.png" width="256" />
+  <img src="https://avatars.githubusercontent.com/u/25079463?s=200&v=4" width="256" />
 </p>
 
 The OrbitDB command line interface to manage orbit-db databases from a terminal.
