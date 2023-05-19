@@ -4,17 +4,13 @@ const av            = process.argv;
 const folderPath    = arguments[1].main.path;
 const thisFile      = arguments[1].main.filename;
 
-const poclif = require(folderPath.concat("/poclif/poclif"));
-
-function DisplayHelp() {
-    console.log("USAGE");
+function InvalidCommand(cmd) {
+    console.error(`${cmd}: \x1B[31mNot recognise as a command.\x1B[m`);
 }
 
 function Main(av) {
-    if (av.length == 0) {
-        DisplayHelp();
+    if (av.length == 0 || av[0] == '--help' || av[0] == '-h') {
+        return DisplayUsage();
     }
+    return Cases(av[0]);
 }
-
-av.splice(0, 2);
-Main(av)
