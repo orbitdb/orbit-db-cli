@@ -1,74 +1,335 @@
-> If you see this section, you've just created a repository using [PoC Innovation's Open-Source project template](https://github.com/PoCInnovation/open-source-project-template). Check the [getting started guide](./.github/getting-started.md).
+oclif-hello-world
+=================
 
-<h1 align="center">
-    OrbitDB - CLI
-</h1>
+oclif example Hello World CLI
 
-<p align="center">
-  <img src="https://avatars.githubusercontent.com/u/25079463?s=200&v=4" width="256" />
-</p>
+[![oclif](https://img.shields.io/badge/cli-oclif-brightgreen.svg)](https://oclif.io)
+[![CircleCI](https://circleci.com/gh/oclif/hello-world/tree/main.svg?style=shield)](https://circleci.com/gh/oclif/hello-world/tree/main)
+[![GitHub license](https://img.shields.io/github/license/oclif/hello-world)](https://github.com/oclif/hello-world/blob/main/LICENSE)
 
-The OrbitDB command line interface to manage orbit-db databases from a terminal.
+<!-- toc -->
+* [Usage](#usage)
+* [Commands](#commands)
+<!-- tocstop -->
+# Usage
+<!-- usage -->
+```sh-session
+$ npm install -g orbitdb
+$ orbitdb COMMAND
+running command...
+$ orbitdb (--version)
+orbitdb/0.0.0 linux-x64 node-v16.18.1
+$ orbitdb --help [COMMAND]
+USAGE
+  $ orbitdb COMMAND
+...
+```
+<!-- usagestop -->
+# Commands
+<!-- commands -->
+* [`orbitdb hello PERSON`](#orbitdb-hello-person)
+* [`orbitdb hello world`](#orbitdb-hello-world)
+* [`orbitdb help [COMMANDS]`](#orbitdb-help-commands)
+* [`orbitdb plugins`](#orbitdb-plugins)
+* [`orbitdb plugins:install PLUGIN...`](#orbitdb-pluginsinstall-plugin)
+* [`orbitdb plugins:inspect PLUGIN...`](#orbitdb-pluginsinspect-plugin)
+* [`orbitdb plugins:install PLUGIN...`](#orbitdb-pluginsinstall-plugin-1)
+* [`orbitdb plugins:link PLUGIN`](#orbitdb-pluginslink-plugin)
+* [`orbitdb plugins:uninstall PLUGIN...`](#orbitdb-pluginsuninstall-plugin)
+* [`orbitdb plugins:uninstall PLUGIN...`](#orbitdb-pluginsuninstall-plugin-1)
+* [`orbitdb plugins:uninstall PLUGIN...`](#orbitdb-pluginsuninstall-plugin-2)
+* [`orbitdb plugins update`](#orbitdb-plugins-update)
 
-## How does it work?
+## `orbitdb hello PERSON`
 
---
+Say hello
 
-## Getting Started
+```
+USAGE
+  $ orbitdb hello PERSON -f <value>
 
-### Installation
+ARGUMENTS
+  PERSON  Person to say hello to
 
-[Explain how to install all of the project's dependencies]
+FLAGS
+  -f, --from=<value>  (required) Who is saying hello
 
-### Quickstart
+DESCRIPTION
+  Say hello
 
-[Explain how to run this project]
+EXAMPLES
+  $ oex hello friend --from oclif
+  hello friend from oclif! (./src/commands/hello/index.ts)
+```
 
-### Usage
+_See code: [dist/commands/hello/index.ts](https://github.com/paulogarithm/orbitdb/blob/v0.0.0/dist/commands/hello/index.ts)_
 
-[Explain how to use this project]
+## `orbitdb hello world`
 
-## Get involved
+Say hello world
 
-You're invited to join this project ! Check out the [contributing guide](./CONTRIBUTING.md).
+```
+USAGE
+  $ orbitdb hello world
 
-If you're interested in how the project is organized at a higher level, please contact the current project manager.
+DESCRIPTION
+  Say hello world
 
-## Our PoC team ❤️
+EXAMPLES
+  $ orbitdb hello world
+  hello world! (./src/commands/hello/world.ts)
+```
 
-Developers
-| [<img src="https://github.com/YlanGarnier.png?size=85" width=85><br><sub>Ylan GARNIER</sub>](https://github.com/YlanGarnier) | [<img src="https://github.com/paulogarithm.png?size=85" width=85><br><sub>Paul PARISOT</sub>](https://github.com/paulogarithm) | [<img src="https://github.com/Saverio976.png?size=85" width=85><br><sub>Xavier MITAULT</sub>](https://github.com/Saverio976)
-| :---: | :---: | :---: |
+## `orbitdb help [COMMANDS]`
 
-Manager
-| [<img src="https://github.com/RezaRahemtola.png?size=85" width=85><br><sub>Reza RAHEMTOLA</sub>](https://github.com/RezaRahemTola)
-| :---: |
+Display help for orbitdb.
 
-<h2 align=center>
-Organization
-</h2>
+```
+USAGE
+  $ orbitdb help [COMMANDS] [-n]
 
-<p align='center'>
-    <a href="https://www.linkedin.com/company/pocinnovation/mycompany/">
-        <img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn logo">
-    </a>
-    <a href="https://www.instagram.com/pocinnovation/">
-        <img src="https://img.shields.io/badge/Instagram-E4405F?style=for-the-badge&logo=instagram&logoColor=white" alt="Instagram logo"
->
-    </a>
-    <a href="https://twitter.com/PoCInnovation">
-        <img src="https://img.shields.io/badge/Twitter-1DA1F2?style=for-the-badge&logo=twitter&logoColor=white" alt="Twitter logo">
-    </a>
-    <a href="https://discord.com/invite/Yqq2ADGDS7">
-        <img src="https://img.shields.io/badge/Discord-7289DA?style=for-the-badge&logo=discord&logoColor=white" alt="Discord logo">
-    </a>
-</p>
-<p align=center>
-    <a href="https://www.poc-innovation.fr/">
-        <img src="https://img.shields.io/badge/WebSite-1a2b6d?style=for-the-badge&logo=GitHub Sponsors&logoColor=white" alt="Website logo">
-    </a>
-</p>
+ARGUMENTS
+  COMMANDS  Command to show help for.
 
-> 🚀 Don't hesitate to follow us on our different networks, and put a star 🌟 on `PoC's` repositories
+FLAGS
+  -n, --nested-commands  Include all nested commands in the output.
 
-> Made with ❤️ by PoC
+DESCRIPTION
+  Display help for orbitdb.
+```
+
+_See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v5.2.9/src/commands/help.ts)_
+
+## `orbitdb plugins`
+
+List installed plugins.
+
+```
+USAGE
+  $ orbitdb plugins [--core]
+
+FLAGS
+  --core  Show core plugins.
+
+DESCRIPTION
+  List installed plugins.
+
+EXAMPLES
+  $ orbitdb plugins
+```
+
+_See code: [@oclif/plugin-plugins](https://github.com/oclif/plugin-plugins/blob/v2.4.7/src/commands/plugins/index.ts)_
+
+## `orbitdb plugins:install PLUGIN...`
+
+Installs a plugin into the CLI.
+
+```
+USAGE
+  $ orbitdb plugins:install PLUGIN...
+
+ARGUMENTS
+  PLUGIN  Plugin to install.
+
+FLAGS
+  -f, --force    Run yarn install with force flag.
+  -h, --help     Show CLI help.
+  -v, --verbose
+
+DESCRIPTION
+  Installs a plugin into the CLI.
+  Can be installed from npm or a git url.
+
+  Installation of a user-installed plugin will override a core plugin.
+
+  e.g. If you have a core plugin that has a 'hello' command, installing a user-installed plugin with a 'hello' command
+  will override the core plugin implementation. This is useful if a user needs to update core plugin functionality in
+  the CLI without the need to patch and update the whole CLI.
+
+
+ALIASES
+  $ orbitdb plugins add
+
+EXAMPLES
+  $ orbitdb plugins:install myplugin 
+
+  $ orbitdb plugins:install https://github.com/someuser/someplugin
+
+  $ orbitdb plugins:install someuser/someplugin
+```
+
+## `orbitdb plugins:inspect PLUGIN...`
+
+Displays installation properties of a plugin.
+
+```
+USAGE
+  $ orbitdb plugins:inspect PLUGIN...
+
+ARGUMENTS
+  PLUGIN  [default: .] Plugin to inspect.
+
+FLAGS
+  -h, --help     Show CLI help.
+  -v, --verbose
+
+GLOBAL FLAGS
+  --json  Format output as json.
+
+DESCRIPTION
+  Displays installation properties of a plugin.
+
+EXAMPLES
+  $ orbitdb plugins:inspect myplugin
+```
+
+## `orbitdb plugins:install PLUGIN...`
+
+Installs a plugin into the CLI.
+
+```
+USAGE
+  $ orbitdb plugins:install PLUGIN...
+
+ARGUMENTS
+  PLUGIN  Plugin to install.
+
+FLAGS
+  -f, --force    Run yarn install with force flag.
+  -h, --help     Show CLI help.
+  -v, --verbose
+
+DESCRIPTION
+  Installs a plugin into the CLI.
+  Can be installed from npm or a git url.
+
+  Installation of a user-installed plugin will override a core plugin.
+
+  e.g. If you have a core plugin that has a 'hello' command, installing a user-installed plugin with a 'hello' command
+  will override the core plugin implementation. This is useful if a user needs to update core plugin functionality in
+  the CLI without the need to patch and update the whole CLI.
+
+
+ALIASES
+  $ orbitdb plugins add
+
+EXAMPLES
+  $ orbitdb plugins:install myplugin 
+
+  $ orbitdb plugins:install https://github.com/someuser/someplugin
+
+  $ orbitdb plugins:install someuser/someplugin
+```
+
+## `orbitdb plugins:link PLUGIN`
+
+Links a plugin into the CLI for development.
+
+```
+USAGE
+  $ orbitdb plugins:link PLUGIN
+
+ARGUMENTS
+  PATH  [default: .] path to plugin
+
+FLAGS
+  -h, --help     Show CLI help.
+  -v, --verbose
+
+DESCRIPTION
+  Links a plugin into the CLI for development.
+  Installation of a linked plugin will override a user-installed or core plugin.
+
+  e.g. If you have a user-installed or core plugin that has a 'hello' command, installing a linked plugin with a 'hello'
+  command will override the user-installed or core plugin implementation. This is useful for development work.
+
+
+EXAMPLES
+  $ orbitdb plugins:link myplugin
+```
+
+## `orbitdb plugins:uninstall PLUGIN...`
+
+Removes a plugin from the CLI.
+
+```
+USAGE
+  $ orbitdb plugins:uninstall PLUGIN...
+
+ARGUMENTS
+  PLUGIN  plugin to uninstall
+
+FLAGS
+  -h, --help     Show CLI help.
+  -v, --verbose
+
+DESCRIPTION
+  Removes a plugin from the CLI.
+
+ALIASES
+  $ orbitdb plugins unlink
+  $ orbitdb plugins remove
+```
+
+## `orbitdb plugins:uninstall PLUGIN...`
+
+Removes a plugin from the CLI.
+
+```
+USAGE
+  $ orbitdb plugins:uninstall PLUGIN...
+
+ARGUMENTS
+  PLUGIN  plugin to uninstall
+
+FLAGS
+  -h, --help     Show CLI help.
+  -v, --verbose
+
+DESCRIPTION
+  Removes a plugin from the CLI.
+
+ALIASES
+  $ orbitdb plugins unlink
+  $ orbitdb plugins remove
+```
+
+## `orbitdb plugins:uninstall PLUGIN...`
+
+Removes a plugin from the CLI.
+
+```
+USAGE
+  $ orbitdb plugins:uninstall PLUGIN...
+
+ARGUMENTS
+  PLUGIN  plugin to uninstall
+
+FLAGS
+  -h, --help     Show CLI help.
+  -v, --verbose
+
+DESCRIPTION
+  Removes a plugin from the CLI.
+
+ALIASES
+  $ orbitdb plugins unlink
+  $ orbitdb plugins remove
+```
+
+## `orbitdb plugins update`
+
+Update installed plugins.
+
+```
+USAGE
+  $ orbitdb plugins update [-h] [-v]
+
+FLAGS
+  -h, --help     Show CLI help.
+  -v, --verbose
+
+DESCRIPTION
+  Update installed plugins.
+```
+<!-- commandsstop -->
