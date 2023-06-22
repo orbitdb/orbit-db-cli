@@ -19,7 +19,7 @@ jobs:
           node-version: '16'
 
       - name: Install stuff
-        run: npm i
+        run: npm ci
 
       - name: Build package
         run: make
@@ -27,4 +27,4 @@ jobs:
       - name: Publish to NPM
         run: npm publish
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
