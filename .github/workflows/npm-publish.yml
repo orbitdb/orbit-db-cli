@@ -25,6 +25,7 @@ jobs:
         run: make
 
       - name: Publish to NPM
-        run: npm publish
+        run: |
+          npx dotenv -- npm publish
         env:
           NPM_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
