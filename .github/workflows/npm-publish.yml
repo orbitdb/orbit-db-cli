@@ -3,7 +3,10 @@ name: Publish CLI on Npm
 on:
   push:
     branches:
-      - '*'
+      - main
+  pull-requests:
+    branches:
+      - main
 
 jobs:
   publish:
