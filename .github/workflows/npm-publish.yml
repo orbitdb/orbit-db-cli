@@ -4,9 +4,6 @@ on:
   push:
     branches:
       - main
-  pull_requests:
-    branches:
-      - main
 
 jobs:
   publish:
@@ -31,3 +28,4 @@ jobs:
         run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          
