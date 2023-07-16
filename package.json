@@ -1,15 +1,15 @@
 {
-  "name": "orbitdb-cli-new",
-  "version": "0.0.1",
-  "description": "The orbitdb CLI",
-  "author": "PoC Innovation",
+  "name": "mydatabase",
+  "version": "0.0.0",
+  "description": "oclif example Hello World CLI",
+  "author": "Paul Parisot",
   "bin": {
-    "orbitdb": "./bin/run"
+    "mydatabase": "./bin/run"
   },
-  "homepage": "https://github.com/paulogarithm/orbitdb",
+  "homepage": "https://github.com/oclif/mydatabase",
   "license": "MIT",
   "main": "dist/index.js",
-  "repository": "paulogarithm/orbitdb",
+  "repository": "oclif/mydatabase",
   "files": [
     "/bin",
     "/dist",
@@ -19,13 +19,14 @@
   "dependencies": {
     "@oclif/core": "^2",
     "@oclif/plugin-help": "^5",
-    "@oclif/plugin-plugins": "^2.4.7"
+    "@oclif/plugin-plugins": "^2.4.7",
+    "ora": "^6.3.1"
   },
   "devDependencies": {
-    "@oclif/test": "^2.3.21",
+    "@oclif/test": "^2.3.26",
     "@types/chai": "^4",
     "@types/mocha": "^9.0.0",
-    "@types/node": "^16.18.34",
+    "@types/node": "^16.18.38",
     "chai": "^4",
     "eslint": "^7.32.0",
     "eslint-config-oclif": "^4",
@@ -34,12 +35,12 @@
     "oclif": "^3",
     "shx": "^0.3.3",
     "ts-node": "^10.9.1",
-    "tslib": "^2.5.2",
+    "tslib": "^2.6.0",
     "typescript": "^4.9.5"
   },
   "oclif": {
-    "bin": "orbitdb",
-    "dirname": "orbitdb",
+    "bin": "mydatabase",
+    "dirname": "mydatabase",
     "commands": "./dist/commands",
     "plugins": [
       "@oclif/plugin-help",
@@ -64,7 +65,7 @@
   "engines": {
     "node": ">=12.0.0"
   },
-  "bugs": "https://github.com/paulogarithm/orbitdb/issues",
+  "bugs": "https://github.com/oclif/mydatabase/issues",
   "keywords": [
     "oclif"
   ],
