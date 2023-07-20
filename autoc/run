@@ -1,0 +1,77 @@
+#!/bin/python3
+
+import os
+import math
+
+POINT   = os.getcwd()
+HERE    = os.path.dirname(os.path.abspath(__file__))
+CONF    = HERE + "/autoc.cfg"
+
+
+def ParseLines(keyword: str, num: int = math.inf) -> list:
+    lines: list(str) = []
+    res = []
+    on = False
+    count = 0
+    with open(CONF, "r") as f:
+        lines = f.readlines()
+    for l in lines:
+        if l == "==" + keyword + '\n':
+            on = not on
+            continue
+        if on and (num and count < num):
+            num += 1
+            res.append(l)
+    for i in range(len(res)):
+        res[i] = res[i][:-1]
+        res[i] = res[i].replace("here", HERE)
+        res[i] = res[i].replace("point", POINT)
+    return res
+
+
+def Main() -> int:
+    lines = ParseLines("Exec", 1)
+    if len(lines) == 0:
+        return 1
+
+    exePath = os.path.realpath(lines[0])
+
+    lines = ParseLines("Complete")
+    if len(lines) == 0:
+        return 1
+
+    if not os.path.exists(exePath):
+        return 1
+
+    exeName = os.path.basename(exePath)
+    exeDir = os.path.dirname(exePath)
+
+    fileName = exeName + "autocomplete.sh"
+    filePath = os.path.join(exeDir, fileName)
+
+    words = '("' + '" "'.join(lines) + '")'
+
+    if os.path.exists(filePath):
+        os.remove(filePath)
+
+    file = open(filePath, "a+")
+    pattern = open(HERE + "/pattern.sh")
+    
+    patternLines = pattern.readlines()
+    for i in range(0, 4):
+        file.write(patternLines[i])
+    file.write(f"\tlocal completions={words}\n")
+
+    for i in range(6, 21):
+        file.write(patternLines[i])
+    file.write('complete -F _hello ' + exeName + '\n')
+
+    os.system(f"echo 'source {filePath}' >> ~/.bashrc")
+    os.system(f"echo 'source {filePath}' >> ~/.zshrc")
+
+    pattern.close()
+    file.close()
+    return 0
+
+if __name__ == "__main__":
+    exit(Main())
