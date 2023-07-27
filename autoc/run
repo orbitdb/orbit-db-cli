@@ -7,6 +7,22 @@ POINT   = os.getcwd()
 HERE    = os.path.dirname(os.path.abspath(__file__))
 CONF    = HERE + "/autoc.cfg"
 
+def SeekAndDestroy(file_path: str, search_string: str):
+    with open(file_path, 'r') as file:
+        lines = file.readlines()
+
+    index = None
+    for i, line in enumerate(lines):
+        if search_string in line:
+            index = i
+            break
+
+    if index is not None and index + 1 < len(lines):
+        del lines[index:index + 2]
+
+    with open(file_path, 'w') as file:
+        file.writelines(lines)
+
 
 def ParseLines(keyword: str, num: int = math.inf) -> list:
     lines: list(str) = []
@@ -66,8 +82,10 @@ def Main() -> int:
         file.write(patternLines[i])
     file.write('complete -F _hello ' + exeName + '\n')
 
-    os.system(f"echo 'source {filePath}' >> ~/.bashrc")
-    os.system(f"echo 'source {filePath}' >> ~/.zshrc")
+    SeekAndDestroy(os.path.expanduser("~") + "/.bashrc", "# autocomplete-orbit")
+    SeekAndDestroy(os.path.expanduser("~") + "/.zshrc", "# autocomplete-orbit")
+    os.system(f"echo -ne '# autocomplete-orbit\nsource {filePath}\n' >> ~/.bashrc")
+    os.system(f"echo -ne '# autocomplete-orbit\nsource {filePath}\n' >> ~/.zshrc")
 
     pattern.close()
     file.close()
